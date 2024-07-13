@@ -14,6 +14,9 @@ import Main from "./Main.vue";
 import "notivue/notification.css"; // Only needed if using built-in notifications
 import "notivue/animations.css"; // Only needed if using built-in animations
 import "notivue/notification-progress.css";
+import { useSettingsStore } from "./stores/settings";
+import { useColorMode } from "@vueuse/core";
+import { createPinia } from "pinia";
 
 const notivue = createNotivue({
   position: "top-right",
@@ -29,8 +32,10 @@ const notivue = createNotivue({
   transition: "transform 0.35s cubic-bezier(0.5, 1, 0.25, 1)",
 });
 
+const pinia = createPinia();
 const app = createApp(Main);
 
+app.use(pinia);
 app.use(router);
 app.use(AuthPlugin);
 app.use(notivue);

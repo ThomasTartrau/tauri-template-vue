@@ -12,10 +12,10 @@ const currentTab = ref(tabs.value[0].component);
 
 <template>
   <main
-    class="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10"
+    class="flex flex-1 flex-col"
   >
     <div
-      class="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]"
+      class="mx-auto grid w-full items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]"
     >
       <nav class="grid gap-4 text-sm text-muted-foreground">
         <a

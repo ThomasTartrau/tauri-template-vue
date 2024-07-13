@@ -7,9 +7,9 @@ import Error404 from "@/pages/others/Error404.vue";
 import BeginResetpassword from "@/pages/users/BeginResetpassword.vue";
 import ResetPassword from "@/pages/users/ResetPassword.vue";
 
-export type Hook0Routes = string;
+export type TemplateRoutes = string;
 
-export const routes: Record<Hook0Routes, string> = {
+export const routes: Record<TemplateRoutes, string> = {
   Home: "Home",
 
   Login: "Login",
