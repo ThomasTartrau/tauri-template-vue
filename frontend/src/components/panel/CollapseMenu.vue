@@ -50,7 +50,7 @@ const { isOpen } = useAdminPanel()
                   isOpen ? 'translate-x-0 opacity-100' : '-translate-x-96 opacity-0',
                 )"
               >
-                {{ label }} {{ active }}
+                {{ label }}
               </p>
             </div>
             <div

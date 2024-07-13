@@ -2,14 +2,16 @@
 import { routes } from '@/router/routes';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetTrigger, SheetContent, SheetHeader } from '@/components/ui/sheet';
-import { Menu, PanelsTopLeft } from 'lucide-vue-next';
+import Menu from '@/components/panel/Menu.vue';
+import { Menu as MenuIcon, PanelsTopLeft } from 'lucide-vue-next';
+import { useAdminPanel } from '@/utils/useAdminPanel';
 </script>
 
 <template>
   <Sheet>
     <SheetTrigger class="lg:hidden" as-child>
       <Button class-name="h-8" variant="outline" size="icon">
-        <Menu :size="18" />
+        <MenuIcon :size="18" />
       </Button>
     </SheetTrigger>
     <SheetContent class="sm:w-72 px-3 h-full flex flex-col" side="left">
@@ -27,6 +29,7 @@ import { Menu, PanelsTopLeft } from 'lucide-vue-next';
           </router-link>
         </Button>
       </SheetHeader>
+      <Menu is-open />
     </SheetContent>
   </Sheet>
 </template>
