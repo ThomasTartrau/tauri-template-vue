@@ -159,12 +159,14 @@ async fn main() -> anyhow::Result<()> {
                         http::header::CONTENT_TYPE,
                     ])
                     .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
-                    .max_age(3600);
+                    .max_age(3600)
+                    .supports_credentials(); // Added for cookie support
 
-                for origin in &config.cors_allowed_origins {
+                /* for origin in &config.cors_allowed_origins {
                     c = c.allowed_origin(origin);
-                }
-
+                } */
+                
+                c = c.allow_any_origin(); // Allow all origins for now
                 c
             };
 
