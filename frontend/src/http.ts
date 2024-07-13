@@ -5,6 +5,7 @@ import {
   AxiosResponse,
 } from "axios";
 import axios from "axios";
+// @ts-ignore
 import { identity } from "ramda";
 
 import type { components } from "@/types";

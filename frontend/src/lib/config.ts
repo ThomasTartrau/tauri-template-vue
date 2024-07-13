@@ -6,6 +6,6 @@ interface Config {
 
 export const config: Config = {
     API_ENDPOINT: "http://localhost:8080/api/v1",
-    API_TIMEOUT: 10,
+    API_TIMEOUT: 1000, // 1 second
     FRONTEND_DEV_MODE: true,
 }
