@@ -12,6 +12,7 @@ import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue'
 import Button from '@/components/ui/button/Button.vue'
 import TooltipContent from '@/components/ui/tooltip/TooltipContent.vue'
 import { logout } from '@/iam'
+import CustomRouterLink from '../CustomRouterLink.vue'
 
 defineProps<{
   isOpen: boolean
@@ -48,7 +49,7 @@ const { t } = useI18n({ useScope: 'global' })
           <template v-else>
             <p class="pb-2" />
           </template>
-          <template v-for="({ href, label, icon, active, submenus }, m_index) in menus">
+          <template v-for="({ route, label, icon, active, submenus }, m_index) in menus">
             <template v-if="submenus.length === 0">
               <div :key="m_index" class="w-full">
                 <TooltipProvider disable-hoverable-content>
@@ -59,7 +60,7 @@ const { t } = useI18n({ useScope: 'global' })
                         class="w-full justify-start h-10 mb-1"
                         as-child
                       >
-                        <router-link :to="href">
+                        <CustomRouterLink :route="route">
                           <div
                             :class="cn('flex justify-center items-center', !isOpen ? '' : 'mr-4')"
                           >
@@ -73,7 +74,7 @@ const { t } = useI18n({ useScope: 'global' })
                           >
                             {{ label }}
                           </p>
-                        </router-link>
+                        </CustomRouterLink>
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent v-if="!isOpen" side="right">

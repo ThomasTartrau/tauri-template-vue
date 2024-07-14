@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { LayoutGrid, Settings, Users } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import type { Group } from '@/lib/menu'
+import { useRoute } from '@/router/routes'
 
 function _useMenu() {
   const { currentRoute } = useRouter()
@@ -14,7 +15,7 @@ function _useMenu() {
         groupLabel: '',
         menus: [
           {
-            href: '/dashboard',
+            route: "Home",
             label: t('sidebar.dashboard_label'),
             active: currentRoute.value.fullPath.includes('/dashboard'),
             icon: LayoutGrid,
@@ -63,16 +64,16 @@ function _useMenu() {
         groupLabel: t('sidebar.settings_group_label.label'),
         menus: [
           {
-            href: '/users',
+            route: "Settings",
             label: t('sidebar.settings_group_label.menus.personnal_label'),
-            active: currentRoute.value.fullPath.includes('/users'),
+            active: currentRoute.value.fullPath.includes(useRoute('Settings')),
             icon: Users,
             submenus: [],
           },
           {
-            href: '/security',
+            route: 'SecuritySettings',
             label: t('sidebar.settings_group_label.menus.security_label'),
-            active: currentRoute.value.fullPath.includes('/security'),
+            active: currentRoute.value.fullPath.includes(useRoute('Settings')) && true,
             icon: Settings,
             submenus: [],
           },

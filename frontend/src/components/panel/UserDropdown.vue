@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import type { UserInfo } from '@/iam'
 import { getUserInfo, logout } from '@/iam'
+import CustomRouterLink from '@/components/CustomRouterLink.vue'
 
 const defaultUserInfo: UserInfo = {
   email: 'johndoe@example.com',
@@ -57,16 +58,16 @@ const { t } = useI18n({ useScope: 'global' })
       <DropdownMenuSeparator />
       <DropdownMenuGroup>
         <DropdownMenuItem class="hover:cursor-pointer" as-child>
-          <RouterLink to="/">
+          <CustomRouterLink route="Home">
             <LayoutGrid class="w-4 h-4 mr-3 text-muted-foreground" />
             {{ t('navbar.dashboard_label') }}
-          </RouterLink>
+          </CustomRouterLink>
         </DropdownMenuItem>
         <DropdownMenuItem class="hover:cursor-pointer" as-child>
-          <RouterLink to="/">
+          <CustomRouterLink route="Settings">
             <User class="w-4 h-4 mr-3 text-muted-foreground" />
             {{ t('navbar.account_label') }}
-          </RouterLink>
+          </CustomRouterLink>
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />

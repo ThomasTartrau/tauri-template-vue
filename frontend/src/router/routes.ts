@@ -6,6 +6,7 @@ import UserSettings from '@/pages/users/UserSettings.vue'
 import Error404 from '@/pages/others/Error404.vue'
 import BeginResetpassword from '@/pages/users/BeginResetpassword.vue'
 import ResetPassword from '@/pages/users/ResetPassword.vue'
+import path from 'path'
 
 export type TemplateRoutes = string
 
@@ -19,6 +20,8 @@ export const routes: Record<TemplateRoutes, string> = {
   ResetPassword: 'ResetPassword',
 
   Settings: 'Settings',
+  SecuritySettings: 'SecuritySettings',
+  DeleteAccountSettings: 'DeleteAccountSettings',
 
   Error404: 'Error404',
 }
@@ -73,8 +76,22 @@ export default [
     component: UserSettings,
   },
   {
+    name: routes.SecuritySettings,
+    path: '/settings/security',
+    component: UserSettings,
+  },
+  {
+    name: routes.DeleteAccountSettings,
+    path: '/settings/delete-account',
+    component: UserSettings,
+  },
+  {
     name: routes.Error404,
     path: '/:pathMatch(.*)*',
     component: Error404,
   },
 ]
+
+export function useRoute(routeName: TemplateRoutes): string {
+  return routes[routeName];
+}

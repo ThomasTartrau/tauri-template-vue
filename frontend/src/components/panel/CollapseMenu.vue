@@ -15,6 +15,7 @@ import DropdownMenuContent from '@/components/ui/dropdown-menu/DropdownMenuConte
 import DropdownMenuLabel from '@/components/ui/dropdown-menu/DropdownMenuLabel.vue'
 import DropdownMenuSeparator from '@/components/ui/dropdown-menu/DropdownMenuSeparator.vue'
 import DropdownMenuItem from '@/components/ui/dropdown-menu/DropdownMenuItem.vue'
+import CustomRouterLink from '../CustomRouterLink.vue'
 
 const props = defineProps<CollapseMenuButtonProps>()
 
@@ -66,12 +67,12 @@ const { isOpen } = useAdminPanel()
       </CollapsibleTrigger>
       <CollapsibleContent class="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
         <Button
-          v-for="({ href, label, active }, index) in submenus" :key="index"
+          v-for="({ route, label, active }, index) in submenus" :key="index"
           :variant="active ? 'secondary' : 'ghost'"
           class="w-full justify-start h-10 mb-1"
           as-child
         >
-          <router-link :to="href" class="flex items-center">
+          <CustomRouterLink :route="route" class="flex items-center">
             <span class="mr-4 ml-2">
               <Dot :size="18" />
             </span>
@@ -85,7 +86,7 @@ const { isOpen } = useAdminPanel()
             >
               {{ label }}
             </p>
-          </router-link>
+          </CustomRouterLink>
         </Button>
       </CollapsibleContent>
     </Collapsible>
@@ -127,12 +128,12 @@ const { isOpen } = useAdminPanel()
           {{ label }}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem v-for="({ href, label }, index) in submenus" :key="index" as-child>
-          <router-link class="cursor-pointer" :to="href">
+        <DropdownMenuItem v-for="({ route, label }, index) in submenus" :key="index" as-child>
+          <CustomRouterLink class="cursor-pointer" :route="route">
             <p class="max-w-[180px] truncate">
               {{ label }}
             </p>
-          </router-link>
+          </CustomRouterLink>
         </DropdownMenuItem>
         <DropdownMenuArrow class="fill-border" />
       </DropdownMenuContent>

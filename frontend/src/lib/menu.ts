@@ -1,13 +1,14 @@
 import type { LucideIcon } from 'lucide-vue-next'
 
 export interface Submenu {
-  href: string
+  route: string
   label: string
   active?: boolean
 }
 
 export interface Menu {
-  href: string
+  route: string
+  params?: string
   label: string
   active: boolean
   icon: LucideIcon
