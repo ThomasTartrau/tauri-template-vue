@@ -11,7 +11,7 @@ const tabs = ref([
 const route = useRouter();
 const currentTab = ref(tabs.value[0].component);
 
-route.beforeEach((to, from, next) => {
+route.beforeEach((to, _from, next) => {
   const tab = tabs.value.find(tab => tab.path === to.path);
   if (tab) {
     currentTab.value = tab.component;
