@@ -1,9 +1,21 @@
 <script setup lang="ts">
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuGroup, DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { LayoutGrid, User } from 'lucide-vue-next';
+import { LayoutGrid, User } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import type { UserInfo } from '@/iam'
+import { getUserInfo, logout } from '@/iam'
 
+const defaultUserInfo: UserInfo = {
+  email: 'johndoe@example.com',
+  firstName: 'John',
+  lastName: 'Doe',
+  name: 'John Doe',
+}
+
+const userInfo: UserInfo = getUserInfo().value || defaultUserInfo
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
@@ -16,7 +28,7 @@ import { LayoutGrid, User } from 'lucide-vue-next';
         <Avatar class="h-8 w-8">
           <AvatarImage src="#" alt="Avatar" />
           <AvatarFallback class="bg-transparent">
-            KD
+            {{ userInfo.firstName.charAt(0).toUpperCase() }}{{ userInfo.lastName.charAt(0).toUpperCase() }}
           </AvatarFallback>
         </Avatar>
       </Button>
@@ -35,10 +47,10 @@ import { LayoutGrid, User } from 'lucide-vue-next';
       <DropdownMenuLabel class="font-normal">
         <div class="flex flex-col space-y-1">
           <p class="text-sm font-medium leading-none">
-            John Doe
+            {{ userInfo.name }}
           </p>
           <p class="text-xs leading-none text-muted-foreground">
-            johndoe@example.com
+            {{ userInfo.email }}
           </p>
         </div>
       </DropdownMenuLabel>
@@ -47,20 +59,20 @@ import { LayoutGrid, User } from 'lucide-vue-next';
         <DropdownMenuItem class="hover:cursor-pointer" as-child>
           <RouterLink to="/">
             <LayoutGrid class="w-4 h-4 mr-3 text-muted-foreground" />
-            Dashboard
+            {{ t('navbar.dashboard_label') }}
           </RouterLink>
         </DropdownMenuItem>
         <DropdownMenuItem class="hover:cursor-pointer" as-child>
           <RouterLink to="/">
             <User class="w-4 h-4 mr-3 text-muted-foreground" />
-            Compte
+            {{ t('navbar.account_label') }}
           </RouterLink>
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
-      <DropdownMenuItem class="hover:cursor-pointer">
+      <DropdownMenuItem class="hover:cursor-pointer" @click="logout">
         <User class="w-4 h-4 mr-3 text-muted-foreground" />
-        Sign out
+        {{ t('sidebar.sign_out_label') }}
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>

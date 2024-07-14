@@ -1,0 +1,148 @@
+{
+  "sidebar": {
+    "dashboard_label": "Dashboard",
+    "settings_group_label": {
+      "label": "Settings",
+      "menus": {
+        "personnal_label": "Informations",
+        "security_label": "Security"
+      }
+    },
+    "sign_out_label": "Sign out"
+  },
+
+  "navbar": {
+    "dashboard_label": "Dashboard",
+    "account_label": "Account"
+  },
+
+  "login_page": {
+    "success_notification": {
+      "title": "Success",
+      "message": "You have successfully logged in."
+    },
+    "card": {
+      "title": "Login",
+      "description": "Enter your email below to login to your account"
+    },
+    "email": {
+      "label": "Email",
+      "errors": {
+        "type": "Invalid email address"
+      }
+    },
+    "password": {
+      "label": "Password",
+      "errors": {
+        "to_short": "Password is too short"
+      }
+    },
+    "forgot_password_label": "Forgot password?",
+    "login_button": "Login",
+    "sign_up": {
+      "label": "Don't have an account?",
+      "button_label": "Sign up"
+    }
+  },
+
+  "sign_up_page": {
+    "success_notification": {
+      "title": "Success",
+      "message": "You're successfully registered. You need to confirm your email address before using Hook0. Check your mailbox!"
+    },
+    "card": {
+      "title": "Sign Up",
+      "description": "Enter your information to create an account"
+    },
+    "first_name": {
+      "label": "First name",
+      "errors": {
+        "too_short": "First name is too short"
+      }
+    },
+    "last_name": {
+      "label": "Last name",
+      "errors": {
+        "too_short": "Last name is too short"
+      }
+    },
+    "email": {
+      "label": "Email",
+      "errors": {
+        "type": "Invalid email address"
+      }
+    },
+    "password": {
+      "label": "Password",
+      "errors": {
+        "too_short": "Password is too short, minimum 12 characters"
+      }
+    },
+    "sign_up_button": "Create an account",
+    "sign_in": {
+      "label": "Already have an account?",
+      "button_label": "Sign in"
+    }
+  },
+
+  "reset_password_page": {
+    "errors_notification": {
+      "missing_fields": {
+        "title": "Warning",
+        "message": "Please fill in all fields"
+      },
+      "not_match": {
+        "title": "Warning",
+        "message": "Passwords do not match"
+      },
+      "required_token": {
+        "title": "Error",
+        "message": "Token is required to reset password"
+      }
+    },
+    "success_notification": {
+      "title": "Success",
+      "message": "Your password has been reset successfully. Please login."
+    },
+    "card": {
+      "title": "Reset Password",
+      "description": "Please enter your new password"
+    },
+    "new_password": {
+      "label": "New password",
+      "errors": {
+        "too_short": "Password is too short"
+      }
+    },
+    "confirm_password": {
+      "label": "Confirm password",
+      "errors": {
+        "too_short": "Password is too short"
+      }
+    },
+    "reset_password_button": "Reset Password",
+    "begin_reset_password": {
+      "label": "Something went wrong?",
+      "button_label": "Resend Email"
+    }
+  },
+
+  "begin_reset_password_page": {
+    "success_notification": {
+      "title": "Success",
+      "message": "Email sent successfully. Please check your email to reset your password."
+    },
+    "card": {
+      "title": "Reset my password",
+      "description": "Enter the email address associated with your account and we'll send you an email with instructions to reset your password."
+    },
+    "email": {
+      "label": "Email",
+      "errors": {
+        "type": "Invalid email address"
+      }
+    },
+    "back_button_label": "Back",
+    "reset_password_button_label": "Reset password"
+  }
+}

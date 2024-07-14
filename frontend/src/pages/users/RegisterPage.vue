@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import { useForm } from "vee-validate";
-import { toTypedSchema } from "@vee-validate/zod";
-import * as z from "zod";
-import { vAutoAnimate } from "@formkit/auto-animate/vue";
+import { useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import * as z from 'zod'
+import { vAutoAnimate } from '@formkit/auto-animate/vue'
 
-import { Button } from "@/components/ui/button";
+import { push } from 'notivue'
+import type { AxiosError, AxiosResponse } from 'axios'
+import { useI18n } from 'vue-i18n'
+import { Button } from '@/components/ui/button'
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
 
 import {
   Card,
@@ -20,38 +23,38 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { routes } from "@/router/routes";
-import { register } from "@/iam";
-import { push } from "notivue";
-import { Problem, displayError } from "@/http";
-import { AxiosError, AxiosResponse } from "axios";
-import router from "@/router/router";
+} from '@/components/ui/card'
+import { routes } from '@/router/routes'
+import { register } from '@/iam'
+import type { Problem } from '@/http'
+import { displayError } from '@/http'
+import router from '@/router/router'
 
+const { t } = useI18n({ useScope: 'global' })
 const formSchema = toTypedSchema(
   z.object({
-    firstName: z.string().min(1, "First name is too short"),
-    lastName: z.string().min(1, "Last name is too short"),
-    email: z.string().email("Invalid email address"),
+    firstName: z.string().min(1, t('sign_up_page.first_name.errors.too_short')),
+    lastName: z.string().min(1, t('sign_up_page.last_name.errors.too_short')),
+    email: z.string().email(t('sign_up_page.email.errors.type')),
     password: z
       .string()
-      .min(12, "Password is too short, minimum 12 characters"),
+      .min(12, t('sign_up_page.password.errors.too_short')),
   }),
-);
+)
 
 const { handleSubmit } = useForm({
   validationSchema: formSchema,
-});
+})
 
 const onSubmit = handleSubmit((values) => {
-  submit(values);
-});
+  submit(values)
+})
 
 async function submit(values: {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
+  firstName: string
+  lastName: string
+  email: string
+  password: string
 }) {
   await register(
     values.email,
@@ -61,16 +64,15 @@ async function submit(values: {
   )
     .then(() => {
       push.success({
-        title: "Success",
-        message:
-          "You're successfully registered. You need to confirm your email address before using Hook0. Check your mailbox!",
+        title: t('sign_up_page.success_notification.title'),
+        message: t('sign_up_page.success_notification.description'),
         duration: 5000,
-      });
-      return router.push({ name: routes.Login });
+      })
+      return router.push({ name: routes.Login })
     })
     .catch((err: AxiosError<AxiosResponse<Problem>>) => {
-      displayError(err);
-    });
+      displayError(err)
+    })
 }
 </script>
 
@@ -81,9 +83,11 @@ async function submit(values: {
   >
     <Card class="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle class="text-2xl"> Sign Up </CardTitle>
+        <CardTitle class="text-2xl">
+          {{ t('sign_up_page.card.title') }}
+        </CardTitle>
         <CardDescription>
-          Enter your information to create an account
+          {{ t('sign_up_page.card.description') }}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -91,7 +95,7 @@ async function submit(values: {
           <div class="grid grid-cols-2 gap-4">
             <FormField v-slot="{ componentField }" name="firstName">
               <FormItem v-auto-animate>
-                <FormLabel>First name</FormLabel>
+                <FormLabel>{{ t('sign_up_page.first_name.label') }}</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -104,7 +108,7 @@ async function submit(values: {
             </FormField>
             <FormField v-slot="{ componentField }" name="lastName">
               <FormItem v-auto-animate>
-                <FormLabel>Last name</FormLabel>
+                <FormLabel>{{ t('sign_up_page.last_name.label') }}</FormLabel>
                 <FormControl>
                   <Input
                     type="text"
@@ -118,7 +122,7 @@ async function submit(values: {
           </div>
           <FormField v-slot="{ componentField }" name="email">
             <FormItem v-auto-animate>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{{ t('sign_up_page.email.label') }}</FormLabel>
               <FormControl>
                 <Input
                   type="email"
@@ -131,7 +135,7 @@ async function submit(values: {
           </FormField>
           <FormField v-slot="{ componentField }" name="password">
             <FormItem v-auto-animate>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>{{ t('sign_up_page.password.label') }}</FormLabel>
               <FormControl>
                 <Input
                   type="password"
@@ -142,12 +146,14 @@ async function submit(values: {
               <FormMessage />
             </FormItem>
           </FormField>
-          <Button type="submit" class="w-full"> Create an account </Button>
+          <Button type="submit" class="w-full">
+            {{ t('sign_up_page.sign_up_button') }}
+          </Button>
         </div>
         <div class="mt-4 text-center text-sm">
-          Already have an account?
+          {{ t('sign_up_page.sign_in.label') }}
           <router-link :to="{ name: routes.Login }" class="underline">
-            Sign in
+            {{ t('sign_up_page.sign_in.button_label') }}
           </router-link>
         </div>
       </CardContent>

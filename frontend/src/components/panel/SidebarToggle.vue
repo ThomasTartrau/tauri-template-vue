@@ -1,7 +1,7 @@
 <script lang="ts" setup>
+import { ChevronLeft } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { ChevronLeft } from 'lucide-vue-next'
 
 defineProps<{
   isOpen: boolean
@@ -21,4 +21,3 @@ defineProps<{
     </Button>
   </div>
 </template>
-

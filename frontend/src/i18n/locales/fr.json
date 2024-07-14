@@ -1,0 +1,149 @@
+{
+  "sidebar": {
+    "dashboard_label": "Accueil",
+    "settings_group_label": {
+      "label": "Paramètres",
+      "menus": {
+        "personnal_label": "Informations",
+        "security_label": "Sécurité"
+      }
+    },
+    "sign_out_label": "Se déconnecter"
+  },
+
+
+  "navbar": {
+    "dashboard_label": "Accueil",
+    "account_label": "Compte"
+  },
+
+  "login_page": {
+    "success_notification": {
+      "title": "Succès",
+      "message": "Vous vous êtes connecté avec succès."
+    },
+    "card": {
+      "title": "Connexion",
+      "description": "Entrez votre adresse e-mail ci-dessous pour vous connecter à votre compte"
+    },
+    "email": {
+      "label": "Email",
+      "errors": {
+        "type": "Adresse e-mail invalide"
+      }
+    },
+    "password": {
+      "label": "Mot de passe",
+      "errors": {
+        "to_short": "Le mot de passe est trop court"
+      }
+    },
+    "forgot_password_label": "Mot de passe oublié ?",
+    "login_button": "Se connecter",
+    "sign_up": {
+      "label": "Vous n'avez pas de compte ?",
+      "button_label": "S'inscrire"
+    }
+  },
+    
+  "sign_up_page": {
+    "success_notification": {
+      "title": "Succès",
+      "message": "Vous êtes inscrit avec succès. Vous devez confirmer votre adresse e-mail avant d'utiliser Hook0. Vérifiez votre boîte aux lettres !"
+    },
+    "card": {
+      "title": "S'inscrire",
+      "description": "Entrez vos informations pour créer un compte"
+    },
+    "first_name": {
+      "label": "Prénom",
+      "errors": {
+        "too_short": "Le prénom est trop court"
+      }
+    },
+    "last_name": {
+      "label": "Nom de famille",
+      "errors": {
+        "too_short": "Le nom de famille est trop court"
+      }
+    },
+    "email": {
+      "label": "Email",
+      "errors": {
+        "type": "Adresse e-mail invalide"
+      }
+    },
+    "password": {
+    "label": "Mot de passe",
+    "errors": {
+    "too_short": "Le mot de passe est trop court, minimum 12 caractères"
+    }
+    },
+    "sign_up_button": "Créer un compte",
+    "sign_in": {
+    "label": "Vous avez déjà un compte ?",
+    "button_label": "Se connecter"
+    }
+    },
+    
+    "reset_password_page": {
+    "errors_notification": {
+    "missing_fields": {
+    "title": "Avertissement",
+    "message": "Veuillez remplir tous les champs"
+    },
+    "not_match": {
+    "title": "Avertissement",
+    "message": "Les mots de passe ne correspondent pas"
+    },
+    "required_token": {
+    "title": "Erreur",
+    "message": "Le jeton est requis pour réinitialiser le mot de passe"
+    }
+    },
+    "success_notification": {
+    "title": "Succès",
+    "message": "Votre mot de passe a été réinitialisé avec succès. Veuillez vous connecter."
+    },
+    "card": {
+    "title": "Réinitialiser le mot de passe",
+    "description": "Veuillez entrer votre nouveau mot de passe"
+    },
+    "new_password": {
+    "label": "Nouveau mot de passe",
+    "errors": {
+    "too_short": "Le mot de passe est trop court"
+    }
+    },
+    "confirm_password": {
+    "label": "Confirmer le mot de passe",
+    "errors": {
+    "too_short": "Le mot de passe est trop court"
+    }
+    },
+    "reset_password_button": "Réinitialiser le mot de passe",
+    "begin_reset_password": {
+    "label": "Quelque chose ne va pas ?",
+    "button_label": "Renvoyer l'email"
+    }
+    },
+    
+    "begin_reset_password_page": {
+    "success_notification": {
+    "title": "Succès",
+    "message": "Email envoyé avec succès. Veuillez vérifier votre email pour réinitialiser votre mot de passe."
+    },
+    "card": {
+    "title": "Réinitialiser mon mot de passe",
+    "description": "Entrez l'adresse e-mail associée à votre compte et nous vous enverrons un e-mail avec des instructions pour réinitialiser votre mot de passe."
+    },
+    "email": {
+    "label": "Email",
+    "errors": {
+    "type": "Adresse e-mail invalide"
+    }
+    },
+    "back_button_label": "Retour",
+    "reset_password_button_label": "Réinitialiser le mot de passe"
+  }
+}

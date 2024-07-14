@@ -1,11 +1,13 @@
 import { createSharedComposable } from '@vueuse/core'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { LayoutGrid, Settings, Users } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
 import type { Group } from '@/lib/menu'
-import { Bookmark, LayoutGrid, Settings, SquarePen, Tag, Users } from 'lucide-vue-next'
 
 function _useMenu() {
   const { currentRoute } = useRouter()
+  const { t } = useI18n({ useScope: 'global' })
   const menuList = computed<Group[]>(() => {
     return [
       {
@@ -13,14 +15,14 @@ function _useMenu() {
         menus: [
           {
             href: '/dashboard',
-            label: 'Dashboard',
+            label: t('sidebar.dashboard_label'),
             active: currentRoute.value.fullPath.includes('/dashboard'),
             icon: LayoutGrid,
             submenus: [],
           },
         ],
       },
-      {
+      /* {
         groupLabel: 'Contents',
         menus: [
           {
@@ -56,21 +58,21 @@ function _useMenu() {
             submenus: [],
           },
         ],
-      },
+      }, */
       {
-        groupLabel: 'Settings',
+        groupLabel: t('sidebar.settings_group_label.label'),
         menus: [
           {
             href: '/users',
-            label: 'Users',
+            label: t('sidebar.settings_group_label.menus.personnal_label'),
             active: currentRoute.value.fullPath.includes('/users'),
             icon: Users,
             submenus: [],
           },
           {
-            href: '/account',
-            label: 'Account',
-            active: currentRoute.value.fullPath.includes('/account'),
+            href: '/security',
+            label: t('sidebar.settings_group_label.menus.security_label'),
+            active: currentRoute.value.fullPath.includes('/security'),
             icon: Settings,
             submenus: [],
           },

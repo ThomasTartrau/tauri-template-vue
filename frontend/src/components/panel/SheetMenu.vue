@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { routes } from '@/router/routes';
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetTrigger, SheetContent, SheetHeader } from '@/components/ui/sheet';
-import Menu from '@/components/panel/Menu.vue';
-import { Menu as MenuIcon, PanelsTopLeft } from 'lucide-vue-next';
-import { useAdminPanel } from '@/utils/useAdminPanel';
+import { Menu as MenuIcon, PanelsTopLeft } from 'lucide-vue-next'
+import { routes } from '@/router/routes'
+import { Button } from '@/components/ui/button'
+import { Sheet, SheetContent, SheetHeader, SheetTrigger } from '@/components/ui/sheet'
+import Menu from '@/components/panel/Menu.vue'
+import { config } from '@/lib/config'
 </script>
 
 <template>
@@ -24,7 +24,7 @@ import { useAdminPanel } from '@/utils/useAdminPanel';
           <router-link :to="{ name: routes.Home }">
             <PanelsTopLeft class="w-6 h-6 mr-1" />
             <h1 class="font-bold text-lg">
-              Brand
+              {{ config.SITE_NAME }}
             </h1>
           </router-link>
         </Button>

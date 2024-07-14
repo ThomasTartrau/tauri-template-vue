@@ -1,21 +1,24 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+import { Ellipsis, LogOut } from 'lucide-vue-next'
+import CollapseMenu from './CollapseMenu.vue'
 import { cn } from '@/lib/utils'
 import { useMenu } from '@/utils/useMenu'
-import { ScrollArea } from '@/components/ui/scroll-area';
-import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue';
-import Tooltip from '@/components/ui/tooltip/Tooltip.vue';
-import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue';
+import { ScrollArea } from '@/components/ui/scroll-area'
+import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue'
+import Tooltip from '@/components/ui/tooltip/Tooltip.vue'
+import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue'
 
-import { Ellipsis, LogOut } from 'lucide-vue-next';
-import Button from '@/components/ui/button/Button.vue';
-import TooltipContent from '@/components/ui/tooltip/TooltipContent.vue';
-import CollapseMenu from './CollapseMenu.vue';
+import Button from '@/components/ui/button/Button.vue'
+import TooltipContent from '@/components/ui/tooltip/TooltipContent.vue'
+import { logout } from '@/iam'
 
 defineProps<{
   isOpen: boolean
 }>()
 
 const { menuList } = useMenu()
+const { t } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
@@ -83,11 +86,11 @@ const { menuList } = useMenu()
             <template v-else>
               <div :key="m_index" class="w-full">
                 <CollapseMenu
-                    :icon="icon"
-                    :label="label"
-                    :active="active"
-                    :submenus="submenus"
-                  />
+                  :icon="icon"
+                  :label="label"
+                  :active="active"
+                  :submenus="submenus"
+                />
               </div>
             </template>
           </template>
@@ -99,6 +102,7 @@ const { menuList } = useMenu()
                 <Button
                   variant="outline"
                   class="w-full justify-center h-10 mt-5"
+                  @click="logout"
                 >
                   <span :class="cn('flex justify-center items-center', isOpen === false ? '' : 'mr-4')">
                     <LogOut :size="18" />
@@ -109,12 +113,12 @@ const { menuList } = useMenu()
                       !isOpen ? 'opacity-0 hidden' : 'opacity-100',
                     )"
                   >
-                    Sign out
+                    {{ t('sidebar.sign_out_label') }}
                   </p>
                 </Button>
               </TooltipTrigger>
               <TooltipContent v-if="!isOpen" side="right">
-                Sign out
+                {{ t('sidebar.sign_out_label') }}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -123,4 +127,3 @@ const { menuList } = useMenu()
     </nav>
   </ScrollArea>
 </template>
-

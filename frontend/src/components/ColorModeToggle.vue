@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { useColorMode } from '@vueuse/core';
-import { TooltipProvider, Tooltip, TooltipTrigger } from '@/components/ui/tooltip';
-import Button from '@/components/ui/button/Button.vue';
-import { Sun, Moon } from 'lucide-vue-next';
+import { useColorMode } from '@vueuse/core'
+import { Moon, Sun } from 'lucide-vue-next'
+import { Tooltip, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import Button from '@/components/ui/button/Button.vue'
 
 const mode = useColorMode()
 

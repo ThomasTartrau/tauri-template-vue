@@ -1,26 +1,26 @@
 export interface components {
   schemas: {
     LoginPost: {
-      email: string;
-      password: string;
-    };
+      email: string
+      password: string
+    }
     Problem: {
-      detail: string;
-      id: string;
+      detail: string
+      id: string
       /** Format: int32 */
-      status: number;
-      title: string;
-    };
+      status: number
+      title: string
+    }
     LoginResponse: {
-      access_token: string;
+      access_token: string
       /** Format: date-time */
-      access_token_expiration: string;
-      email: string;
-      first_name: string;
-      last_name: string;
-      refresh_token: string;
+      access_token_expiration: string
+      email: string
+      first_name: string
+      last_name: string
+      refresh_token: string
       /** Format: date-time */
-      refresh_token_expiration: string;
-    };
-  };
+      refresh_token_expiration: string
+    }
+  }
 }

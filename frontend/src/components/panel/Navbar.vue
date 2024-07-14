@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import ColorModeToggle from '@/components/ColorModeToggle.vue';
-import UserDropdown from '@/components/panel/UserDropdown.vue';
-import SheetMenu from './SheetMenu.vue';
+import ColorModeToggle from '@/components/ColorModeToggle.vue'
+import UserDropdown from '@/components/panel/UserDropdown.vue'
+import SheetMenu from '@/components/panel/SheetMenu.vue'
+import { config } from '@/lib/config'
 </script>
 
 <template>
@@ -10,7 +11,7 @@ import SheetMenu from './SheetMenu.vue';
       <div class="flex items-center space-x-4 lg:space-x-0">
         <SheetMenu />
         <h1 class="font-bold">
-          Brand
+          {{ config.SITE_NAME }}
         </h1>
       </div>
       <div class="flex flex-1 items-center space-x-2 justify-end">

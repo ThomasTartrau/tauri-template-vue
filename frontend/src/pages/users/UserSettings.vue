@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref } from 'vue'
 
 const tabs = ref([
-  { name: "General", component: "general-settings" },
-  { name: "Security", component: "security-settings" },
-  { name: "Delete account", component: "delete-account" },
-]);
+  { name: 'General', component: 'general-settings' },
+  { name: 'Security', component: 'security-settings' },
+  { name: 'Delete account', component: 'delete-account' },
+])
 
-const currentTab = ref(tabs.value[0].component);
+const currentTab = ref(tabs.value[0].component)
 </script>
 
 <template>

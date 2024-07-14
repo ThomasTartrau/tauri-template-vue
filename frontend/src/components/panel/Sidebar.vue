@@ -1,11 +1,12 @@
 <script setup>
+import { PanelsRightBottom } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
-import { useAdminPanel } from '@/utils/useAdminPanel';
+import { useAdminPanel } from '@/utils/useAdminPanel'
 import Menu from '@/components/panel/Menu.vue'
 import SidebarToggle from '@/components/panel/SidebarToggle.vue'
-import { PanelsRightBottom } from 'lucide-vue-next';
-import { Button } from '@/components/ui/button';
-import {routes} from '@/router/routes';
+import { Button } from '@/components/ui/button'
+import { routes } from '@/router/routes'
+import { config } from '@/lib/config'
 
 const { isOpen, setOpen } = useAdminPanel()
 </script>
@@ -28,7 +29,7 @@ const { isOpen, setOpen } = useAdminPanel()
                        : '-translate-x-96 opacity-0 hidden',
             )"
           >
-            Brand
+            {{ config.SITE_NAME }}
           </h1>
         </router-link>
       </Button>
