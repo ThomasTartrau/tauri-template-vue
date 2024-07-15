@@ -11,3 +11,28 @@ export const config: Config = {
   FRONTEND_DEV_MODE: true,
   SITE_NAME: 'Template',
 }
+
+export interface Language {
+  value: string
+  label: string
+  flag: string
+}
+
+export function supportedLanguages(): Language[] {
+  return [
+    {
+      label: 'English',
+      value: 'en',
+      flag: 'gb',
+    },
+    {
+      label: 'Français',
+      value: 'fr',
+      flag: 'fr',
+    }
+  ]
+}
+
+export function getLanguageLabel(value: string): string {
+  return supportedLanguages().find(lang => lang.value === value)?.label ?? value
+}
