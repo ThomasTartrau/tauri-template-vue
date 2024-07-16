@@ -15,7 +15,7 @@ function _useMenu() {
         groupLabel: '',
         menus: [
           {
-            route: "Home",
+            route: 'Home',
             label: t('sidebar.dashboard_label'),
             active: currentRoute.value.fullPath.includes('/dashboard'),
             icon: LayoutGrid,
@@ -64,7 +64,7 @@ function _useMenu() {
         groupLabel: t('sidebar.settings_group_label.label'),
         menus: [
           {
-            route: "Settings",
+            route: 'Settings',
             label: t('sidebar.settings_group_label.menus.personnal_label'),
             active: currentRoute.value.fullPath.includes(useRoute('Settings')),
             icon: Users,

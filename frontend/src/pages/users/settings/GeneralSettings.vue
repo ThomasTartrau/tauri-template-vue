@@ -23,6 +23,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import type { UserInfo } from '@/iam'
 import { getUserInfo } from '@/iam'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 const user_info = ref<UserInfo | null>(null)
 
@@ -73,6 +74,12 @@ onUpdated(_load)
     </CardHeader>
     <CardContent>
       <div class="mb-6">
+        <Avatar size="base">
+          <AvatarImage src="#" alt="Avatar" />
+          <AvatarFallback>
+            {{ user_info?.firstName.charAt(0).toUpperCase() }}{{ user_info?.lastName.charAt(0).toUpperCase() }}
+          </AvatarFallback>
+        </Avatar>
         <FormField name="Email">
           <FormItem>
             <FormLabel>Email</FormLabel>

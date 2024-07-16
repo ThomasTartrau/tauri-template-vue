@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { Ellipsis, LogOut } from 'lucide-vue-next'
+import CustomRouterLink from '../CustomRouterLink.vue'
 import CollapseMenu from './CollapseMenu.vue'
 import { cn } from '@/lib/utils'
 import { useMenu } from '@/utils/useMenu'
@@ -12,7 +13,6 @@ import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue'
 import Button from '@/components/ui/button/Button.vue'
 import TooltipContent from '@/components/ui/tooltip/TooltipContent.vue'
 import { logout } from '@/iam'
-import CustomRouterLink from '../CustomRouterLink.vue'
 
 defineProps<{
   isOpen: boolean

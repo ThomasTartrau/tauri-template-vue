@@ -205,6 +205,13 @@ export interface UserInfo {
   name: string
 }
 
+export const emptyUserInfo: UserInfo = {
+  email: '',
+  firstName: '',
+  lastName: '',
+  name: '',
+}
+
 export function getUserInfo(): ComputedRef<null | UserInfo> {
   return computed(() => {
     if (state.value) {

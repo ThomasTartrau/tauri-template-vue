@@ -2,6 +2,7 @@
 import { DropdownMenuArrow } from 'radix-vue'
 import { ref } from 'vue'
 import { ChevronDown, Dot } from 'lucide-vue-next'
+import CustomRouterLink from '../CustomRouterLink.vue'
 import { cn } from '@/lib/utils'
 import type { CollapseMenuButtonProps } from '@/lib/menu'
 import { useAdminPanel } from '@/utils/useAdminPanel'
@@ -15,7 +16,6 @@ import DropdownMenuContent from '@/components/ui/dropdown-menu/DropdownMenuConte
 import DropdownMenuLabel from '@/components/ui/dropdown-menu/DropdownMenuLabel.vue'
 import DropdownMenuSeparator from '@/components/ui/dropdown-menu/DropdownMenuSeparator.vue'
 import DropdownMenuItem from '@/components/ui/dropdown-menu/DropdownMenuItem.vue'
-import CustomRouterLink from '../CustomRouterLink.vue'
 
 const props = defineProps<CollapseMenuButtonProps>()
 

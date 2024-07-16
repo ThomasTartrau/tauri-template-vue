@@ -6,7 +6,6 @@ import UserSettings from '@/pages/users/UserSettings.vue'
 import Error404 from '@/pages/others/Error404.vue'
 import BeginResetpassword from '@/pages/users/BeginResetpassword.vue'
 import ResetPassword from '@/pages/users/ResetPassword.vue'
-import path from 'path'
 
 export type TemplateRoutes = string
 
@@ -93,5 +92,5 @@ export default [
 ]
 
 export function useRoute(routeName: TemplateRoutes): string {
-  return routes[routeName];
+  return routes[routeName]
 }

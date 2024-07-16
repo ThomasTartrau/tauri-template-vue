@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 
 const tabs = ref([
-  { name: 'General', component: 'general-settings', path: "/settings" },
-  { name: 'Security', component: 'security-settings', path: "/settings/security" },
-  { name: 'Delete account', component: 'delete-account', path: "/settings/delete-account" },
+  { name: 'General', component: 'general-settings', path: '/settings' },
+  { name: 'Security', component: 'security-settings', path: '/settings/security' },
+  { name: 'Delete account', component: 'delete-account', path: '/settings/delete-account' },
 ])
 
-const route = useRouter();
-const currentTab = ref(tabs.value[0].component);
+const route = useRouter()
+const currentTab = ref(tabs.value[0].component)
 
 route.beforeEach((to, _from, next) => {
-  const tab = tabs.value.find(tab => tab.path === to.path);
+  const tab = tabs.value.find(tab => tab.path === to.path)
   if (tab) {
-    currentTab.value = tab.component;
+    currentTab.value = tab.component
   }
-  next();
-});
+  next()
+})
 </script>
 
 <template>

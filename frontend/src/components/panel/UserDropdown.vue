@@ -5,17 +5,10 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import type { UserInfo } from '@/iam'
-import { getUserInfo, logout } from '@/iam'
+import { emptyUserInfo, getUserInfo, logout } from '@/iam'
 import CustomRouterLink from '@/components/CustomRouterLink.vue'
 
-const defaultUserInfo: UserInfo = {
-  email: 'johndoe@example.com',
-  firstName: 'John',
-  lastName: 'Doe',
-  name: 'John Doe',
-}
-
-const userInfo: UserInfo = getUserInfo().value || defaultUserInfo
+const userInfo: UserInfo = getUserInfo().value || emptyUserInfo
 const { t } = useI18n({ useScope: 'global' })
 </script>
 

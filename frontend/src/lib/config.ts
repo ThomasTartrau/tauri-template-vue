@@ -29,7 +29,7 @@ export function supportedLanguages(): Language[] {
       label: 'Français',
       value: 'fr',
       flag: 'fr',
-    }
+    },
   ]
 }
 
