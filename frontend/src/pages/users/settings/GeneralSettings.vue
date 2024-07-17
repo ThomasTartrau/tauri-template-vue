@@ -24,16 +24,23 @@ import { Label } from '@/components/ui/label'
 import type { UserInfo } from '@/iam'
 import { getUserInfo } from '@/iam'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Upload } from 'lucide-vue-next'
+import http, { displayError } from '@/http'
+
+const isOpen = ref<boolean>(false);
+const closeDialog = () => isOpen.value = false;
 
 const user_info = ref<UserInfo | null>(null)
 
 const first_name = ref<string>('')
 const last_name = ref<string>('')
+const image_link = ref<string>('')
 
 function _load() {
   user_info.value = getUserInfo().value
   first_name.value = user_info.value?.firstName || ''
   last_name.value = user_info.value?.lastName || ''
+  image_link.value = "/profile-pictures/" + user_info.value?.user_id + ".jpeg" || ''
 }
 
 function submit() {
@@ -63,6 +70,39 @@ function submit() {
     })
   }
 }
+
+async function changeProfilePicture(event: Event) {
+  const target = event.target as HTMLInputElement;
+  const files = target.files;
+  
+  if (files) {
+    const file = files[0];
+    if (file.size > 5*1024*1024) {
+      push.error({
+        title: 'File too large',
+        message: 'The file you are trying to upload is too large. Please upload a file smaller than 5MB',
+        duration: 5000,
+      })
+    }
+    else {
+      let fd = new FormData();
+      fd.append('picture', file);
+      await http.post("/user/profile-picture", fd, {
+        headers: {
+          'Content-Type': "multipart/form-data; "
+        }
+      }).then(() => {
+        push.success({
+          title: 'Profile picture updated',
+          message: 'Your profile picture has been updated successfully',
+          duration: 5000,
+        })
+        closeDialog()
+      }).catch(displayError)
+    }
+  }
+}
+
 onMounted(_load)
 onUpdated(_load)
 </script>
@@ -74,12 +114,42 @@ onUpdated(_load)
     </CardHeader>
     <CardContent>
       <div class="mb-6">
-        <Avatar size="base">
-          <AvatarImage src="#" alt="Avatar" />
-          <AvatarFallback>
-            {{ user_info?.firstName.charAt(0).toUpperCase() }}{{ user_info?.lastName.charAt(0).toUpperCase() }}
-          </AvatarFallback>
-        </Avatar>
+        <div class="flex flex-col">
+          <Label class="mb-4">Profile picture</Label>
+          <div class="flex items-center">
+            <Avatar size="base" class="mb-6">
+              <AvatarImage :src="image_link" />
+              <AvatarFallback>
+                {{ user_info?.firstName.charAt(0).toUpperCase() }}{{ user_info?.lastName.charAt(0).toUpperCase() }}
+              </AvatarFallback>
+            </Avatar>
+            <Dialog v-model:open="isOpen">
+              <DialogTrigger>
+                <Button class="ml-8">
+                  <Upload class="mr-2" />
+                  Change profile picture
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Change profile picture</DialogTitle>
+                  <DialogDescription>
+                    Upload a new profile picture. Click save when you're done.
+                  </DialogDescription>
+                </DialogHeader>
+                <form enctype="multipart/form-data">
+                  <Input id="picture" type="file" accept="image/*" v-on:change="changeProfilePicture" />
+                  <DialogFooter>
+                    <Button class="mt-4" type="button" variant="secondary" @click="closeDialog">
+                      Back
+                    </Button>
+                  </DialogFooter>
+                </form>
+              </DialogContent>
+            </Dialog>
+            
+          </div>
+        </div>
         <FormField name="Email">
           <FormItem>
             <FormLabel>Email</FormLabel>

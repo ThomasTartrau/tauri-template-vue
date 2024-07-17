@@ -88,6 +88,7 @@ impl Serialize for Role {
 pub enum Action {
     AuthLogout,
     AuthChangePassword,
+    UserSettingsChangeProfilePicture,
 }
 
 impl<'a> Action {
@@ -95,6 +96,7 @@ impl<'a> Action {
         match self {
             Action::AuthLogout => "auth:logout",
             Action::AuthChangePassword => "auth:change_password",
+            Action::UserSettingsChangeProfilePicture => "users_settings:change_profile_picture",
         }
     }
 
@@ -104,6 +106,7 @@ impl<'a> Action {
         let mut per_action_roles = match self {
             Self::AuthLogout => vec![],
             Self::AuthChangePassword => vec![],
+            Self::UserSettingsChangeProfilePicture => vec![],
         };
 
         roles.append(&mut per_action_roles);
@@ -114,6 +117,7 @@ impl<'a> Action {
         let mut facts = match self {
             Self::AuthLogout => vec![],
             Self::AuthChangePassword => vec![],
+            Self::UserSettingsChangeProfilePicture => vec![],
         };
 
         facts.push(fact!("action({action})", action = self.action_name()));

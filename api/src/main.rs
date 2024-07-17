@@ -85,6 +85,10 @@ struct Config {
     /// Path to the directory containing the web app to serve
     #[clap(long, env, default_value = "../frontend/dist/")]
     webapp_path: String,
+
+    /// Path to the profile picture directory
+    #[clap(long, env, default_value = "../frontend/public/profile-pictures/")]
+    profile_picture_dir: String,
 }
 
 #[derive(Debug, Clone)]
@@ -94,6 +98,7 @@ struct State {
     password_minimum_length: u8,
     mailer: utils::mailer::Mailer,
     app_url: Url,
+    profile_picture_dir: String,
 }
 
 fn parse_biscuit_private_key(input: &str) -> Result<PrivateKey, String> {
@@ -144,6 +149,7 @@ async fn main() -> anyhow::Result<()> {
             password_minimum_length: config.password_minimum_length,
             mailer,
             app_url: config.app_url,
+            profile_picture_dir: config.profile_picture_dir,
         };
 
         // Run web server
@@ -240,7 +246,16 @@ async fn main() -> anyhow::Result<()> {
                                                 .wrap(biscuit_auth.clone())
                                                 .route(web::post().to(auth::auth::change_password)),
                                         ),
+                                )
+                                .service(
+                                    web::scope("/user")
+                                        .service(
+                                            web::resource("/profile-picture")
+                                                .wrap(biscuit_auth.clone())
+                                                .route(web::post().to(auth::auth::change_profile_picture)),
+                                        )
                                 ),
+                                
                         )
                 );
 

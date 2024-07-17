@@ -7,9 +7,24 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import type { UserInfo } from '@/iam'
 import { emptyUserInfo, getUserInfo, logout } from '@/iam'
 import CustomRouterLink from '@/components/CustomRouterLink.vue'
+import { onMounted, onUpdated, ref } from 'vue'
+import { on } from 'events'
 
 const userInfo: UserInfo = getUserInfo().value || emptyUserInfo
 const { t } = useI18n({ useScope: 'global' })
+
+const profile_picture = ref<string>('')
+
+function _load() {
+  profile_picture.value = "/profile-pictures/" + userInfo.user_id + ".jpeg"
+}
+
+onMounted(() => {
+  _load()
+})
+onUpdated(() => {
+  _load()
+})
 </script>
 
 <template>
@@ -20,7 +35,7 @@ const { t } = useI18n({ useScope: 'global' })
         class="relative h-8 w-8 rounded-full"
       >
         <Avatar class="h-8 w-8">
-          <AvatarImage src="#" alt="Avatar" />
+          <AvatarImage :src="profile_picture" alt="Avatar" />
           <AvatarFallback class="bg-transparent">
             {{ userInfo.firstName.charAt(0).toUpperCase() }}{{ userInfo.lastName.charAt(0).toUpperCase() }}
           </AvatarFallback>

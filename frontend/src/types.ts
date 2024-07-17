@@ -1,3 +1,5 @@
+import { UUID } from "@/http"
+
 export interface components {
   schemas: {
     LoginPost: {
@@ -15,6 +17,7 @@ export interface components {
       access_token: string
       /** Format: date-time */
       access_token_expiration: string
+      user_id: UUID
       email: string
       first_name: string
       last_name: string

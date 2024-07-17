@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 
 import { differenceInMilliseconds, subMinutes } from 'date-fns'
 import { push } from 'notivue'
-import http from '@/http'
+import http, { UUID } from '@/http'
 import type { components } from '@/types'
 import router from '@/router/router'
 import { routes } from '@/router/routes.ts'
@@ -16,6 +16,7 @@ interface State {
   accessTokenExpiration: Date
   refreshToken: string
   refreshTokenExpiration: Date
+  user_id: UUID
   email: string
   firstName: string
   lastName: string
@@ -35,6 +36,7 @@ function readStateFromStorage(): State | null {
       accessTokenExpiration: string
       refreshToken: string
       refreshTokenExpiration: string
+      user_id: UUID
       email: string
       firstName: string
       lastName: string
@@ -122,6 +124,7 @@ export async function login(email: string, password: string): Promise<void> {
     accessTokenExpiration: new Date(res.data.access_token_expiration),
     refreshToken: res.data.refresh_token,
     refreshTokenExpiration: new Date(res.data.refresh_token_expiration),
+    user_id: res.data.user_id,
     email: res.data.email,
     firstName: res.data.first_name,
     lastName: res.data.last_name,
@@ -155,6 +158,7 @@ export async function refresh(): Promise<void> {
       accessTokenExpiration: new Date(res.data.access_token_expiration),
       refreshToken: res.data.refresh_token,
       refreshTokenExpiration: new Date(res.data.refresh_token_expiration),
+      user_id: res.data.user_id,
       email: res.data.email,
       firstName: res.data.first_name,
       lastName: res.data.last_name,
@@ -199,6 +203,7 @@ export function getRefreshToken(): ComputedRef<null | string> {
 }
 
 export interface UserInfo {
+  user_id: UUID
   email: string
   firstName: string
   lastName: string
@@ -206,6 +211,7 @@ export interface UserInfo {
 }
 
 export const emptyUserInfo: UserInfo = {
+  user_id: '',
   email: '',
   firstName: '',
   lastName: '',
@@ -216,6 +222,7 @@ export function getUserInfo(): ComputedRef<null | UserInfo> {
   return computed(() => {
     if (state.value) {
       return {
+        user_id: state.value.user_id,
         email: state.value.email,
         firstName: state.value.firstName,
         lastName: state.value.lastName,
