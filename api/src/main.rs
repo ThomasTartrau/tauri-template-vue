@@ -263,11 +263,8 @@ async fn main() -> anyhow::Result<()> {
                                                         .route(web::post().to(users_settings::main::change_name)),
                                                 )
                                         )
-                                        .service(
-                                            web::resource("/delete")
-                                                .wrap(biscuit_auth.clone())
-                                                .route(web::delete().to(users_settings::main::delete_user)),
-                                        ),
+                                    .wrap(biscuit_auth.clone())
+                                    .route("", web::delete().to(users_settings::main::delete_user)),
                                 ),
                                 
                         )

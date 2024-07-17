@@ -72,7 +72,7 @@ function writeStateToStorage(state: State): void {
   window.localStorage.setItem(localStorageKey, JSON.stringify(state))
 }
 
-function removeStateFromStorage(): void {
+export function removeStateFromStorage(): void {
   window.localStorage.removeItem(localStorageKey)
 }
 

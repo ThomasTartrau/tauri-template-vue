@@ -3,13 +3,12 @@ import type { Problem } from '@/http.ts'
 import http, { handleError } from '@/http.ts'
 
 export async function deleteUser(): Promise<void> {
-  return Promise.reject({
-    id: 'ComingSoon',
-    title: 'Not implemented yet',
-    status: 500,
-    detail:
-      'This feature is not implemented yet, please contact the support team to delete your account.',
-  })
+  return http.delete('/user')
+  .then(
+    (res: AxiosResponse<void>) => res.data,
+    (err: AxiosError<AxiosResponse<Problem>>) =>
+      Promise.reject(handleError(err)),
+  ) 
 }
 
 export async function changePassword(new_password: string): Promise<void> {

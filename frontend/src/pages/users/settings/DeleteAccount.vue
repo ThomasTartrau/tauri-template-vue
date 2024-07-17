@@ -20,11 +20,21 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { displayProblem } from '@/http'
+import { removeStateFromStorage } from '@/iam'
+import { push } from 'notivue'
 
 async function submit() {
   await deleteUser()
     .then(() => {
-      console.log('Deleted')
+      removeStateFromStorage()
+      push.success({
+        title: 'Account deleted',
+        message: 'Your account has been successfully deleted',
+        duration: 5000,
+      })
+      setTimeout(() => {
+        window.location.reload()
+      }, 1000)
     })
     .catch(displayProblem)
 }
