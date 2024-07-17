@@ -65,7 +65,7 @@ async function submit(values: {
     .then(() => {
       push.success({
         title: t('sign_up_page.success_notification.title'),
-        message: t('sign_up_page.success_notification.description'),
+        message: t('sign_up_page.success_notification.message'),
         duration: 5000,
       })
       return router.push({ name: routes.Login })
