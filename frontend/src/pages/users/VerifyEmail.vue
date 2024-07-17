@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { push } from 'notivue'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { verifyEmail } from './UserServices'
+import { resendVerificationEmail, verifyEmail } from './UserServices'
 import Separator from '@/components/ui/separator/Separator.vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -11,6 +11,8 @@ import { routes } from '@/router/routes'
 import { displayProblem } from '@/http'
 
 const route = useRoute()
+
+const token = ref<string>('');
 
 async function _load() {
   if (!route.query.token) {
@@ -21,9 +23,9 @@ async function _load() {
     })
   }
 
-  const token = route.query.token as string
+  token.value = route.query.token as string
 
-  await verifyEmail(token)
+  await verifyEmail(token.value)
     .then(() => {
       push.success({
         title: 'Email verified',
@@ -31,6 +33,18 @@ async function _load() {
         duration: 5000,
       })
       return router.push({ name: routes.Login })
+    })
+    .catch(displayProblem)
+}
+
+async function submit() {
+  await resendVerificationEmail(token.value)
+    .then(() => {
+      push.success({
+        title: 'Email sent',
+        message: 'Email has been sent successfully. Please check your inbox',
+        duration: 5000,
+      })
     })
     .catch(displayProblem)
 }
@@ -61,7 +75,7 @@ onMounted(() => {
         <Separator class="my-4" />
 
         <div class="flex flex-col gap-2 mt-4">
-          <Button variant="outline">
+          <Button variant="outline" @click="submit">
             Resend email
           </Button>
         </div>

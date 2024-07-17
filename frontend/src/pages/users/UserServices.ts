@@ -31,6 +31,14 @@ export async function verifyEmail(token: string): Promise<void> {
   )
 }
 
+export async function resendVerificationEmail(token: string): Promise<void> {
+  return http.unauthenticated.post(`/auth/resend-verification-email`, { token }).then(
+    (res: AxiosResponse<void>) => res.data,
+    (err: AxiosError<AxiosResponse<Problem>>) =>
+      Promise.reject(handleError(err)),
+  )
+}
+
 export async function beginResetPassword(email: string): Promise<void> {
   return http.unauthenticated
     .post(`/auth/begin-reset-password`, { email })

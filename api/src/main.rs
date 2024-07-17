@@ -234,6 +234,10 @@ async fn main() -> anyhow::Result<()> {
                                             web::resource("/verify-email")
                                                 .route(web::post().to(auth::auth::verify_email)),
                                         ).service(
+                                            web::resource("/resend-verification-email")
+                                                .route(web::post().to(auth::auth::resend_email_verification)),
+                                        )
+                                        .service(
                                             web::resource("/begin-reset-password").route(
                                                 web::post().to(auth::auth::begin_reset_password),
                                             ),

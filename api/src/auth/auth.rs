@@ -5,7 +5,7 @@ use biscuit_auth::{Biscuit, PrivateKey};
 use chrono::{DateTime, Utc};
 use lettre::message::Mailbox;
 use lettre::Address;
-use log::{debug, error};
+use log::{debug, error, info, warn};
 use paperclip::actix::web::{Data, Json};
 use paperclip::actix::{api_v2_operation, Apiv2Schema, CreatedJson, NoContent};
 use serde::{Deserialize, Serialize};
@@ -20,6 +20,8 @@ use crate::auth::iam::{
     authorize_email_verification, authorize_only_user, authorize_refresh_token, create_refresh_token, create_reset_password_token, create_user_access_token, authorize_reset_password, Action
 };
 use crate::utils::openapi::{OaBiscuitRefresh, OaBiscuitUserAccess};
+
+use super::iam::{create_email_verification_token, get_user_id_from_expired_email_verification};
 
 #[derive(Debug, Serialize, Deserialize, Apiv2Schema, Validate)]
 pub struct LoginPost {
@@ -53,6 +55,12 @@ pub struct LoginResponse {
 
 #[derive(Debug, Serialize, Deserialize, Apiv2Schema, Validate)]
 pub struct EmailVerificationPost {
+    #[validate(non_control_character, length(min = 1, max = 1000))]
+    token: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Apiv2Schema, Validate)]
+pub struct ResendEmailVerificationPost {
     #[validate(non_control_character, length(min = 1, max = 1000))]
     token: String,
 }
@@ -365,6 +373,89 @@ pub async fn verify_email(
     } else {
         Err(MyProblem::AuthEmailExpired)
     }
+}
+
+#[api_v2_operation(
+    summary = "Resend email verification",
+    description = "Resend an email with a link to verify the email of a user.",
+    operation_id = "auth.resend_email_verification",
+    consumes = "application/json",
+    produces = "application/json",
+    tags("Authentication")
+)]
+pub async fn resend_email_verification(
+    state: Data<crate::State>,
+    body: Json<ResendEmailVerificationPost>,
+) -> Result<NoContent, MyProblem> {
+    if let Err(e) = body.validate() {
+        return Err(MyProblem::Validation(e));
+    }
+
+    let body = body.into_inner();
+
+    let token =
+        Biscuit::from_base64(body.token, state.biscuit_private_key.public()).map_err(|e| {
+            debug!("{e}");
+            MyProblem::AuthEmailExpired
+        })?;
+
+    if let Ok(user_id) = get_user_id_from_expired_email_verification(&token) {
+        let user_lookup = query_as!(
+            UserLookup,
+            "
+                SELECT user__id AS user_id, email, first_name, last_name, email_verified_at, password AS password_hash
+                FROM iam.user
+                WHERE user__id = $1 AND email_verified_at IS NULL
+            ",
+            &user_id,
+        )
+        .fetch_optional(&state.db)
+        .await
+        .map_err(MyProblem::from)?;
+        info!("User lookup: {:?}", user_lookup);
+
+        if let Some(user) = user_lookup {
+            let verification_token =
+            create_email_verification_token(&state.biscuit_private_key, user_id).map_err(|e| {
+                error!("Error trying to create email verification token: {e}");
+                MyProblem::InternalServerError
+            })?;
+
+            let address = Address::from_str(&user.email).map_err(|e| {
+                error!("Error trying to parse email address: {e}");
+                MyProblem::InternalServerError
+            })?;
+            let recipient = Mailbox::new(
+                Some(format!("{} {}", &user.first_name, &user.last_name)),
+                address,
+            );
+            state
+                .mailer
+                .send_mail(
+                    Mail::VerifyUserEmail {
+                        url: format!(
+                            "{}verify-email?token={}",
+                            state.app_url, &verification_token.serialized_biscuit
+                        ),
+                    },
+                    recipient,
+                )
+                .await
+                .map_err(|e| {
+                    warn!("Could not send verification email: {e}");
+                    e
+                })?;
+    
+    
+            Ok(NoContent)
+        } else {
+            Err(MyProblem::AuthEmailExpired)
+        }
+    } else {
+        Err(MyProblem::Forbidden)
+    
+    }
+    
 }
 
 #[api_v2_operation(

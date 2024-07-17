@@ -497,6 +497,36 @@ pub fn authorize_email_verification(
     Ok(AuthorizedEmailVerificationToken { user_id })
 }
 
+pub fn get_user_id_from_expired_email_verification(
+    biscuit: &Biscuit,
+) -> Result<Uuid, biscuit_auth::error::Token> {
+    let mut authorizer = authorizer!(
+        r#"
+            supported_version("email_verification", 1);
+            valid_version($t, $v) <- type($t), version($v), supported_version($t, $v);
+            check if valid_version($t, $v);
+        "#
+    );
+    authorizer.add_allow_all();
+
+    authorizer.set_limits(AuthorizerLimits {
+        max_time: Duration::from_secs(1800),
+        ..Default::default()
+    });
+    authorizer.add_token(biscuit)?;
+    let result = authorizer.authorize();
+    trace!("Authorizer state:\n{}", authorizer.print_world());
+    result?;
+
+    let raw_user_id: Vec<(Vec<u8>,)> = authorizer.query(rule!("data($id) <- user_id($id)"))?;
+    let user_id = raw_user_id
+        .first()
+        .and_then(|(str,)| Uuid::from_slice(str).ok())
+        .ok_or(biscuit_auth::error::Token::InternalError)?;
+
+    Ok(user_id)
+}
+
 pub fn authorize_reset_password(
     biscuit: &Biscuit,
 ) -> Result<AuthorizedResetPasswordToken, biscuit_auth::error::Token> {
