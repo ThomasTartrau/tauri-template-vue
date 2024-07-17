@@ -1,20 +1,15 @@
 use actix_web::web::ReqData;
-use actix_multipart::Multipart;
 use argon2::password_hash::PasswordHashString;
 use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
 use biscuit_auth::{Biscuit, PrivateKey};
 use chrono::{DateTime, Utc};
-use futures_util::TryStreamExt;
 use lettre::message::Mailbox;
 use lettre::Address;
-use log::{debug, error, warn};
-use mime::{Mime, IMAGE_JPEG, IMAGE_PNG};
+use log::{debug, error};
 use paperclip::actix::web::{Data, Json};
 use paperclip::actix::{api_v2_operation, Apiv2Schema, CreatedJson, NoContent};
 use serde::{Deserialize, Serialize};
 use sqlx::{query, query_as, query_scalar, Acquire, Postgres};
-use std::fs;
-use std::io::Write;
 use std::str::FromStr;
 use uuid::Uuid;
 use validator::Validate;
@@ -550,69 +545,6 @@ pub async fn change_password(
             token.user_id,
         )
         .await?;
-
-        Ok(NoContent)
-    } else {
-        Err(MyProblem::Forbidden)
-    }
-}
-
-const MAX_FILE_COUNT: usize = 1;
-const MAX_FILE_SIZE: usize = 1024 * 1024 * 5; // Todo: Add file limit
-const IMAGE_SIZE: (u32, u32) = (200, 200); // Todo: Add resize image
-const ALLOWED_FILE_TYPES: [Mime; 2] = [IMAGE_JPEG, IMAGE_PNG];
-/* #[api_v2_operation(
-    summary = "Change profile picture",
-    description = "Change the profile picture of a user.",
-    operation_id = "user_settings.change_profile_picture",
-    consumes = "multipart/form-data",
-    produces = "application/json",
-    tags("UserSettings")
-)] */
-pub async fn change_profile_picture(
-    state: Data<crate::State>,
-    _: OaBiscuitUserAccess,
-    biscuit: ReqData<Biscuit>,
-    mut payload: Multipart,
-) -> Result<NoContent, MyProblem> {
-    if let Ok(token) = authorize_only_user(
-        &biscuit,
-        Action::UserSettingsChangeProfilePicture,
-    ) {
-        let mut current_count = 0;
-        loop {
-            if current_count == MAX_FILE_COUNT { break; }
-            if let Some(mut field) = payload.try_next().await.map_err(|e| {
-                error!("Error trying to read profile picture: {e}");
-                MyProblem::InternalServerError
-            })? {
-                let filetype: Option<&Mime> = field.content_type();
-                if filetype.is_none() { continue; }
-                if !ALLOWED_FILE_TYPES.contains(&filetype.unwrap()) { continue; }
-
-                let destination: String = format!(
-                    "{}{}.jpeg",
-                    state.profile_picture_dir,
-                    token.user_id
-                );
-    
-                let mut saved_file: fs::File = fs::File::create(&destination).map_err(|e| {
-                    error!("Error trying to create profile picture: {e}");
-                    MyProblem::InternalServerError
-                })?;
-                while let Ok(Some(chunk)) = field.try_next().await {
-                    let _ = saved_file.write_all(&chunk).map_err(|e| {
-                        error!("Error trying to write profile picture: {e}");
-                        MyProblem::InternalServerError
-                    })?;
-                }
-                
-            } else { 
-                warn!("No profile picture found in the request");
-                break;
-             }
-            current_count += 1;
-        }
 
         Ok(NoContent)
     } else {

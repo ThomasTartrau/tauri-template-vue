@@ -89,6 +89,8 @@ pub enum Action {
     AuthLogout,
     AuthChangePassword,
     UserSettingsChangeProfilePicture,
+    UserSettingsChangeName,
+    UserSettingsDeleteUser,
 }
 
 impl<'a> Action {
@@ -97,6 +99,8 @@ impl<'a> Action {
             Action::AuthLogout => "auth:logout",
             Action::AuthChangePassword => "auth:change_password",
             Action::UserSettingsChangeProfilePicture => "users_settings:change_profile_picture",
+            Action::UserSettingsChangeName => "users_settings:change_name",
+            Action::UserSettingsDeleteUser => "users_settings:delete_user",
         }
     }
 
@@ -107,6 +111,8 @@ impl<'a> Action {
             Self::AuthLogout => vec![],
             Self::AuthChangePassword => vec![],
             Self::UserSettingsChangeProfilePicture => vec![],
+            Self::UserSettingsChangeName => vec![],
+            Self::UserSettingsDeleteUser => vec![],
         };
 
         roles.append(&mut per_action_roles);
@@ -118,6 +124,8 @@ impl<'a> Action {
             Self::AuthLogout => vec![],
             Self::AuthChangePassword => vec![],
             Self::UserSettingsChangeProfilePicture => vec![],
+            Self::UserSettingsChangeName => vec![],
+            Self::UserSettingsDeleteUser => vec![],
         };
 
         facts.push(fact!("action({action})", action = self.action_name()));

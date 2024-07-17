@@ -13,6 +13,7 @@ use url::Url;
 use crate::auth::middleware_biscuit;
 
 mod auth;
+mod users_settings;
 mod utils;
 
 const APP_TITLE: &str = "Thomas's template";
@@ -252,8 +253,21 @@ async fn main() -> anyhow::Result<()> {
                                         .service(
                                             web::resource("/profile-picture")
                                                 .wrap(biscuit_auth.clone())
-                                                .route(web::post().to(auth::auth::change_profile_picture)),
+                                                .route(web::post().to(users_settings::main::change_profile_picture)),
                                         )
+                                        .service(
+                                            web::scope("/profile")
+                                                .service(
+                                                    web::resource("/name")
+                                                        .wrap(biscuit_auth.clone())
+                                                        .route(web::post().to(users_settings::main::change_name)),
+                                                )
+                                        )
+                                        .service(
+                                            web::resource("/delete")
+                                                .wrap(biscuit_auth.clone())
+                                                .route(web::delete().to(users_settings::main::delete_user)),
+                                        ),
                                 ),
                                 
                         )

@@ -22,13 +22,16 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import type { UserInfo } from '@/iam'
-import { getUserInfo } from '@/iam'
+import { getUserInfo, refresh } from '@/iam'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Upload } from 'lucide-vue-next'
 import http, { displayError } from '@/http'
 
-const isOpen = ref<boolean>(false);
-const closeDialog = () => isOpen.value = false;
+const isProfileDialogOpen = ref<boolean>(false);
+const closeProfileDialog = () => isProfileDialogOpen.value = false;
+
+const isNameDialogOpen = ref<boolean>(false);
+const closeNameDialog = () => isNameDialogOpen.value = false;
 
 const user_info = ref<UserInfo | null>(null)
 
@@ -43,7 +46,7 @@ function _load() {
   image_link.value = "/profile-pictures/" + user_info.value?.user_id + ".jpeg" || ''
 }
 
-function submit() {
+async function changeName() {
   if (
     first_name.value !== user_info.value?.firstName
     || last_name.value !== user_info.value?.lastName
@@ -55,12 +58,19 @@ function submit() {
         duration: 5000,
       })
     }
-
-    push.success({
-      title: 'Profile updated',
-      message: 'Your profile has been updated successfully',
-      duration: 5000,
-    })
+    
+    await http.post("/user/profile/name", {
+      first_name: first_name.value,
+      last_name: last_name.value,
+    }).then(() => {
+      push.success({
+        title: 'Profile updated',
+        message: 'Your profile has been updated successfully',
+        duration: 5000,
+      })
+      closeNameDialog()
+      refresh().then(() => _load()).catch(displayError)
+    }).catch(displayError)
   }
   else {
     push.error({
@@ -97,7 +107,7 @@ async function changeProfilePicture(event: Event) {
           message: 'Your profile picture has been updated successfully',
           duration: 5000,
         })
-        closeDialog()
+        closeProfileDialog()
       }).catch(displayError)
     }
   }
@@ -123,7 +133,7 @@ onUpdated(_load)
                 {{ user_info?.firstName.charAt(0).toUpperCase() }}{{ user_info?.lastName.charAt(0).toUpperCase() }}
               </AvatarFallback>
             </Avatar>
-            <Dialog v-model:open="isOpen">
+            <Dialog v-model:open="isProfileDialogOpen">
               <DialogTrigger>
                 <Button class="ml-8">
                   <Upload class="mr-2" />
@@ -140,7 +150,7 @@ onUpdated(_load)
                 <form enctype="multipart/form-data">
                   <Input id="picture" type="file" accept="image/*" v-on:change="changeProfilePicture" />
                   <DialogFooter>
-                    <Button class="mt-4" type="button" variant="secondary" @click="closeDialog">
+                    <Button class="mt-4" type="button" variant="secondary" @click="closeProfileDialog">
                       Back
                     </Button>
                   </DialogFooter>
@@ -208,7 +218,7 @@ onUpdated(_load)
       </div>
 
       <div class="flex justify-end">
-        <Dialog>
+        <Dialog v-model:open="isNameDialogOpen">
           <form>
             <DialogTrigger as-child>
               <Button variant="outline">
@@ -238,7 +248,10 @@ onUpdated(_load)
                 </div>
               </div>
               <DialogFooter>
-                <Button @click="submit">
+                <Button variant="secondary" @click="closeNameDialog">
+                  Cancel
+                </Button>
+                <Button @click="changeName">
                   Save changes
                 </Button>
               </DialogFooter>
