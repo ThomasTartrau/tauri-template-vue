@@ -31,5 +31,7 @@ frontend/src-tauri/capabilities
 api/run.sh
 api/.env
 api/target
+api/.sqlx
 
 old
+frontend/public/profile-pictures
