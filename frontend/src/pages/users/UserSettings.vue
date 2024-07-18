@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, onUpdated, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const tabs = ref([
@@ -9,14 +9,19 @@ const tabs = ref([
 ])
 
 const route = useRouter()
-const currentTab = ref(tabs.value[0].component)
+const currentTab = ref<string>('general-settings')
 
-route.beforeEach((to, _from, next) => {
-  const tab = tabs.value.find(tab => tab.path === to.path)
+function _onLoad() {
+  const tab = tabs.value.find(tab => tab.path === route.currentRoute.value.path)
   if (tab) {
     currentTab.value = tab.component
   }
-  next()
+}
+onMounted(() => {
+  _onLoad()
+})
+onUpdated(() => {
+  _onLoad()
 })
 </script>
 

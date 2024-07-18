@@ -12,7 +12,7 @@ import { displayProblem } from '@/http'
 
 const route = useRoute()
 
-const token = ref<string>('');
+const token = ref<string>('')
 
 async function _load() {
   if (!route.query.token) {

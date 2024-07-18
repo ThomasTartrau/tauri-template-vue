@@ -5,7 +5,7 @@ import type {
   AxiosResponse,
 } from 'axios'
 import axios from 'axios'
-// @ts-expect-error
+// @ts-expect-error "Idk the problem with my linter but print is not defined"
 import { identity } from 'ramda'
 
 import { push } from 'notivue'
@@ -16,7 +16,6 @@ import { getAccessToken, getRefreshToken } from '@/iam'
 
 type definitions = components['schemas']
 
-// eslint-disable-next-line @typescript-eslint/require-await
 async function getAxios(
   authenticated: boolean = true,
   use_refresh_token: boolean = false,
@@ -57,71 +56,62 @@ async function getAxios(
 }
 
 export default {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get<T = any, R = AxiosResponse<T>>(
     url: string,
     config?: AxiosRequestConfig,
   ): Promise<R> {
     return getAxios().then(axios => axios.get(url, config))
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   delete<T = any, R = AxiosResponse<T>>(
     url: string,
     config?: AxiosRequestConfig,
   ): Promise<R> {
     return getAxios().then(axios => axios.delete(url, config))
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   head<T = any, R = AxiosResponse<T>>(
     url: string,
     config?: AxiosRequestConfig,
   ): Promise<R> {
     return getAxios().then(axios => axios.head(url, config))
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   options<T = any, R = AxiosResponse<T>>(
     url: string,
     config?: AxiosRequestConfig,
   ): Promise<R> {
     return getAxios().then(axios => axios.options(url, config))
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   post<T = any, R = AxiosResponse<T>>(
     url: string,
-    data?: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+    data?: any,
     config?: AxiosRequestConfig,
   ): Promise<R> {
     return getAxios().then(axios => axios.post(url, data, config))
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   put<T = any, R = AxiosResponse<T>>(
     url: string,
-    data?: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+    data?: any,
     config?: AxiosRequestConfig,
   ): Promise<R> {
     return getAxios().then(axios => axios.put(url, data, config))
   },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   patch<T = any, R = AxiosResponse<T>>(
     url: string,
-    data?: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+    data?: any,
     config?: AxiosRequestConfig,
   ): Promise<R> {
     return getAxios().then(axios => axios.patch(url, data, config))
   },
 
   unauthenticated: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     get<T = any, R = AxiosResponse<T>>(
       url: string,
       config?: AxiosRequestConfig,
     ): Promise<R> {
       return getAxios(false).then(axios => axios.get(url, config))
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     post<T = any, R = AxiosResponse<T>>(
       url: string,
-      data?: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+      data?: any,
       config?: AxiosRequestConfig,
     ): Promise<R> {
       return getAxios(false).then(axios => axios.post(url, data, config))
@@ -129,10 +119,9 @@ export default {
   },
 
   withRefreshToken: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     post<T = any, R = AxiosResponse<T>>(
       url: string,
-      data?: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+      data?: any,
       config?: AxiosRequestConfig,
     ): Promise<R> {
       return getAxios(true, true).then(axios =>
@@ -179,7 +168,12 @@ export function displayError(err: AxiosError<AxiosResponse<Problem>>) {
     message: problem.detail,
     duration: 5000,
   }
-  problem.status >= 500 ? push.error(options) : push.warning(options)
+  if (problem.status >= 500) {
+    push.error(options)
+  }
+  else {
+    push.warning(options)
+  }
 }
 
 export function displayProblem(problem: Problem) {
@@ -188,5 +182,10 @@ export function displayProblem(problem: Problem) {
     message: problem.detail,
     duration: 5000,
   }
-  problem.status >= 500 ? push.error(options) : push.warning(options)
+  if (problem.status >= 500) {
+    push.error(options)
+  }
+  else {
+    push.warning(options)
+  }
 }

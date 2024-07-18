@@ -1,4 +1,4 @@
-import { UUID } from "@/http"
+import type { UUID } from '@/http'
 
 export interface components {
   schemas: {

@@ -4,11 +4,11 @@ import http, { handleError } from '@/http.ts'
 
 export async function deleteUser(): Promise<void> {
   return http.delete('/user')
-  .then(
-    (res: AxiosResponse<void>) => res.data,
-    (err: AxiosError<AxiosResponse<Problem>>) =>
-      Promise.reject(handleError(err)),
-  ) 
+    .then(
+      (res: AxiosResponse<void>) => res.data,
+      (err: AxiosError<AxiosResponse<Problem>>) =>
+        Promise.reject(handleError(err)),
+    )
 }
 
 export async function changePassword(new_password: string): Promise<void> {

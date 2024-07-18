@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { push } from 'notivue'
 import { deleteUser } from '../UserServices'
 import {
   Card,
@@ -21,7 +22,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { displayProblem } from '@/http'
 import { removeStateFromStorage } from '@/iam'
-import { push } from 'notivue'
 
 async function submit() {
   await deleteUser()

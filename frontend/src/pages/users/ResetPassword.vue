@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { push } from 'notivue'
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import Error404 from '../others/Error404.vue'
 import { resetPassword } from './UserServices'
 import {
   Card,
@@ -163,6 +164,6 @@ onMounted(() => {
     </Card>
   </div>
   <div v-else class="flex items-center justify-center min-h-screen">
-    <component is="error-404" />
+    <component :is="Error404" />
   </div>
 </template>

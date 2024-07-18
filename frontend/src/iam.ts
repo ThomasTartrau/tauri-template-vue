@@ -3,7 +3,8 @@ import { computed, ref } from 'vue'
 
 import { differenceInMilliseconds, subMinutes } from 'date-fns'
 import { push } from 'notivue'
-import http, { UUID } from '@/http'
+import type { UUID } from '@/http'
+import http from '@/http'
 import type { components } from '@/types'
 import router from '@/router/router'
 import { routes } from '@/router/routes.ts'
@@ -89,8 +90,6 @@ async function scheduleAutoRefresh(): Promise<void> {
     else {
       if (state.value.accessTokenExpiration <= new Date()) {
         await refresh().catch(() => {
-          console.log('Could not refresh access token, logging out...')
-
           state.value = null
           removeStateFromStorage()
         })
@@ -100,10 +99,8 @@ async function scheduleAutoRefresh(): Promise<void> {
           subMinutes(state.value.accessTokenExpiration, 1),
           new Date(),
         )
-        console.log(`Will refresh access token in ${refreshInMs / 1000}s...`)
 
         refreshTimerId = window.setTimeout(() => {
-          console.log('Refreshing access token...')
           refresh().catch(console.error)
         }, refreshInMs)
       }
