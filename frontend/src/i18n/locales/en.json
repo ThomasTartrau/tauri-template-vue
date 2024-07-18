@@ -144,5 +144,53 @@
     },
     "back_button_label": "Back",
     "reset_password_button_label": "Reset password"
+  },
+
+  "user_settings_pages": {
+    "main": {
+      "tabs": {
+        "general": "General",
+        "security": "Security",
+        "delete_account": "Delete Account"
+      }
+    },
+    "general": {
+      "errors": {
+        "too_short": {
+          "title": "Invalid name",
+          "message": "First and last name must be at least 2 characters long"
+        },
+        "no_changes": {
+          "title": "No changes",
+          "message": "No changes have been made to your profile"
+        },
+        "file_too_large": {
+          "title": "File too large",
+          "message": "The file you are trying to upload is too large. Please upload a file smaller than 5MB"
+        }
+      },
+      "success_notifications": {
+        "profile_updated": {
+          "title": "Profile updated",
+          "message": "Your profile has been updated successfully"
+        },
+        "profile_picture_updated": {
+          "title": "Profile picture updated",
+          "message": "Your profile picture has been updated successfully"
+        }
+      },
+      "card": {
+        "title": "Personnal information"
+      },
+      "profile_picture": {
+        "label": "Profile picture",
+        "change_profile_picture_button": "Change profile picture",
+        "dialog": {
+          "title": "Change profile picture",
+          "description": "Upload a new profile picture. Click save when you're done.",
+          "back_button": "Back"
+        }
+      }
+    }
   }
 }
