@@ -39,13 +39,6 @@ const first_name = ref<string>('')
 const last_name = ref<string>('')
 const image_link = ref<string>('')
 
-function _load() {
-  user_info.value = getUserInfo().value
-  first_name.value = user_info.value?.firstName || ''
-  last_name.value = user_info.value?.lastName || ''
-  image_link.value = `/profile-pictures/${user_info.value?.user_id}.jpeg` || ''
-}
-
 async function changeName() {
   if (
     first_name.value !== user_info.value?.firstName
@@ -111,6 +104,13 @@ async function changeProfilePicture(event: Event) {
       }).catch(displayError)
     }
   }
+}
+
+function _load() {
+  user_info.value = getUserInfo().value
+  first_name.value = user_info.value?.firstName || ''
+  last_name.value = user_info.value?.lastName || ''
+  image_link.value = `/profile-pictures/${user_info.value?.user_id}.jpeg` || ''
 }
 
 onMounted(_load)
