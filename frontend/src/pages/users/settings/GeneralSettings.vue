@@ -25,6 +25,7 @@ import { Label } from '@/components/ui/label'
 import type { UserInfo } from '@/iam'
 import { getUserInfo, refresh } from '@/iam'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import profilePictureUpload from '@/components/custom/profile-picture-upload.vue'
 import http, { displayError } from '@/http'
 
 const isProfileDialogOpen = ref<boolean>(false)
@@ -74,38 +75,6 @@ async function changeName() {
   }
 }
 
-async function changeProfilePicture(event: Event) {
-  const target = event.target as HTMLInputElement
-  const files = target.files
-
-  if (files) {
-    const file = files[0]
-    if (file.size > 5 * 1024 * 1024) {
-      push.error({
-        title: 'File too large',
-        message: 'The file you are trying to upload is too large. Please upload a file smaller than 5MB',
-        duration: 5000,
-      })
-    }
-    else {
-      const fd = new FormData()
-      fd.append('picture', file)
-      await http.post('/user/profile-picture', fd, {
-        headers: {
-          'Content-Type': 'multipart/form-data; ',
-        },
-      }).then(() => {
-        push.success({
-          title: 'Profile picture updated',
-          message: 'Your profile picture has been updated successfully',
-          duration: 5000,
-        })
-        closeProfileDialog()
-      }).catch(displayError)
-    }
-  }
-}
-
 function _load() {
   user_info.value = getUserInfo().value
   first_name.value = user_info.value?.firstName || ''
@@ -142,19 +111,13 @@ onUpdated(_load)
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Change profile picture</DialogTitle>
-                  <DialogDescription>
-                    Upload a new profile picture. Click save when you're done.
-                  </DialogDescription>
+                  <DialogTitle class="text-center">
+                    Upload your profile picture
+                  </DialogTitle>
                 </DialogHeader>
-                <form enctype="multipart/form-data">
-                  <Input id="picture" type="file" accept="image/*" @change="changeProfilePicture" />
-                  <DialogFooter>
-                    <Button class="mt-4" type="button" variant="secondary" @click="closeProfileDialog">
-                      Back
-                    </Button>
-                  </DialogFooter>
-                </form>
+                <div class="grid gap-4 py-4">
+                  <profilePictureUpload @close-profile-dialog="closeProfileDialog" />
+                </div>
               </DialogContent>
             </Dialog>
           </div>

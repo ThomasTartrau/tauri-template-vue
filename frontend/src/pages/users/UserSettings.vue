@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { onMounted, onUpdated, ref } from 'vue'
-import { useI18n } from 'vue-i18n';
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 const { t } = useI18n({ useScope: 'global' })
 
 const tabs = ref([
-  { name: t("user_settings_pages.main.tabs.general"), component: 'general-settings', path: '/settings' },
-  { name: t("user_settings_pages.main.tabs.security"), component: 'security-settings', path: '/settings/security' },
-  { name: t("user_settings_pages.main.tabs.delete_account"), component: 'delete-account', path: '/settings/delete-account' },
+  { name: t('user_settings_pages.main.tabs.general'), component: 'general-settings', path: '/settings' },
+  { name: t('user_settings_pages.main.tabs.security'), component: 'security-settings', path: '/settings/security' },
+  { name: t('user_settings_pages.main.tabs.delete_account'), component: 'delete-account', path: '/settings/delete-account' },
 ])
 
 const route = useRouter()
