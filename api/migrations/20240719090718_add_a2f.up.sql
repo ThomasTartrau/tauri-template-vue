@@ -1,1 +1,0 @@
-ALTER table iam.user add column a2f_enable_at timestamptz;
