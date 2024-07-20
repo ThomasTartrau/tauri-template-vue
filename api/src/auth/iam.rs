@@ -560,3 +560,74 @@ pub fn authorize_reset_password(
 
     Ok(AuthorizedResetPasswordToken { user_id })
 }
+
+const A2F_TOKEN_VERSION: i64 = 1;
+const A2F_TOKEN_EXPIRATION: Duration = Duration::from_secs(60 * 5);
+
+pub async fn create_a2f_token(
+    private_key: &PrivateKey,
+    user_id: Uuid,
+) -> Result<RootToken, biscuit_auth::error::Token> {
+    let keypair = KeyPair::from(private_key);
+    let created_at = SystemTime::now();
+    let expired_at = created_at + A2F_TOKEN_EXPIRATION;
+
+    let biscuit = biscuit!(
+        r#"
+            type("a2f");
+            version({A2F_TOKEN_VERSION});
+            user_id({user_id});
+            created_at({created_at});
+            expired_at({expired_at});
+        "#,
+    )
+    .build(&keypair)?;
+    
+    let serialized_biscuit = biscuit.to_base64()?;
+    let revocation_id = biscuit
+        .revocation_identifiers()
+        .first()
+        .map(|rid| rid.to_owned())
+        .ok_or(biscuit_auth::error::Token::InternalError)?;
+
+    Ok(RootToken {
+        biscuit,
+        serialized_biscuit,
+        revocation_id,
+        expired_at: Some(DateTime::from(expired_at)),
+    })
+}
+
+pub async fn authorize_a2f_token(
+    biscuit: &Biscuit,
+) -> Result<Uuid, biscuit_auth::error::Token> {
+    let mut authorizer = authorizer!(
+        r#"
+            supported_version("a2f", 1);
+            valid_version($t, $v) <- type($t), version($v), supported_version($t, $v);
+            check if valid_version($t, $v);
+
+            expired($t) <- expired_at($exp), time($t), $exp < $t;
+            deny if expired($t);
+        "#
+    );
+    authorizer.set_time();
+    authorizer.add_allow_all();
+
+    authorizer.set_limits(AuthorizerLimits {
+        max_time: Duration::from_secs(1800),
+        ..Default::default()
+    });
+    authorizer.add_token(biscuit)?;
+    let result = authorizer.authorize();
+    trace!("Authorizer state:\n{}", authorizer.print_world());
+    result?;
+
+    let raw_user_id: Vec<(Vec<u8>,)> = authorizer.query(rule!("data($id) <- user_id($id)"))?;
+    let user_id = raw_user_id
+        .first()
+        .and_then(|(str,)| Uuid::from_slice(str).ok())
+        .ok_or(biscuit_auth::error::Token::InternalError)?;
+
+    Ok(user_id)
+}
