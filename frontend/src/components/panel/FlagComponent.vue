@@ -1,23 +1,36 @@
 <script setup lang="ts">
-import CountryFlag from 'vue-country-flag-next'
-import { ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
-import { getLanguageLabel, supportedLanguages } from '@/lib/config'
-import type { Language } from '@/lib/config'
+import CountryFlag from "vue-country-flag-next";
+import { ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { getLanguageLabel, supportedLanguages } from "@/lib/config";
+import type { Language } from "@/lib/config";
 
-const { locale } = useI18n()
-const availableLanguages = ref<Language[]>(supportedLanguages())
+const { locale } = useI18n();
+const availableLanguages = ref<Language[]>(supportedLanguages());
 
-watch(locale, (newLocale, oldLocale) => {
-  if (newLocale && newLocale !== oldLocale)
-    handleLanguageSelect(newLocale)
-}, { immediate: true })
+watch(
+  locale,
+  (newLocale, oldLocale) => {
+    if (newLocale && newLocale !== oldLocale) handleLanguageSelect(newLocale);
+  },
+  { immediate: true },
+);
 
 function handleLanguageSelect(newLocale: string) {
-  if (!newLocale || !availableLanguages.value.some(sl => sl.value === newLocale))
-    return
-  localStorage.setItem('language', newLocale)
+  if (
+    !newLocale ||
+    !availableLanguages.value.some((sl) => sl.value === newLocale)
+  )
+    return;
+  localStorage.setItem("language", newLocale);
 }
 </script>
 
@@ -35,9 +48,7 @@ function handleLanguageSelect(newLocale: string) {
               :key="language.value"
               :value="language.value"
             >
-              <CountryFlag
-                :country="language.flag"
-              />
+              <CountryFlag :country="language.flag" />
             </SelectItem>
           </SelectGroup>
         </SelectContent>

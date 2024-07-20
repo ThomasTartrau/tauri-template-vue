@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { push } from 'notivue'
-import { deleteUser } from '../UserServices'
+import { push } from "notivue";
+import { deleteUser } from "../UserServices";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
+} from "@/components/ui/card";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,25 +18,25 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
-import { displayProblem } from '@/http'
-import { removeStateFromStorage } from '@/iam'
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { displayProblem } from "@/http";
+import { removeStateFromStorage } from "@/iam";
 
 async function submit() {
   await deleteUser()
     .then(() => {
-      removeStateFromStorage()
+      removeStateFromStorage();
       push.success({
-        title: 'Account deleted',
-        message: 'Your account has been successfully deleted',
+        title: "Account deleted",
+        message: "Your account has been successfully deleted",
         duration: 5000,
-      })
+      });
       setTimeout(() => {
-        window.location.reload()
-      }, 1000)
+        window.location.reload();
+      }, 1000);
     })
-    .catch(displayProblem)
+    .catch(displayProblem);
 }
 </script>
 
@@ -53,9 +53,7 @@ async function submit() {
       <div class="flex justify-end mt-6">
         <AlertDialog>
           <AlertDialogTrigger as-child>
-            <Button variant="destructive">
-              Delete account
-            </Button>
+            <Button variant="destructive"> Delete account </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -67,9 +65,7 @@ async function submit() {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction @click="submit">
-                Delete
-              </AlertDialogAction>
+              <AlertDialogAction @click="submit"> Delete </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

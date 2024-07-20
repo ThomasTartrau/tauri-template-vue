@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { push } from 'notivue'
-import { ref } from 'vue'
-import { changePassword } from '../UserServices'
-import { Button } from '@/components/ui/button'
+import { push } from "notivue";
+import { ref } from "vue";
+import { changePassword } from "../UserServices";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
+} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -18,35 +18,35 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { displayProblem } from '@/http'
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { displayProblem } from "@/http";
 
-const isPasswordDialogOpen = ref<boolean>(false)
-const closePasswordDialog = () => isPasswordDialogOpen.value = false
+const isPasswordDialogOpen = ref<boolean>(false);
+const closePasswordDialog = () => (isPasswordDialogOpen.value = false);
 
-const new_password = ref<string>('')
-const confirm_password = ref<string>('')
+const new_password = ref<string>("");
+const confirm_password = ref<string>("");
 
 async function submit() {
   if (new_password.value !== confirm_password.value) {
     return push.error({
-      title: 'Invalid password',
-      message: 'Passwords do not match',
+      title: "Invalid password",
+      message: "Passwords do not match",
       duration: 5000,
-    })
+    });
   }
 
   await changePassword(new_password.value)
     .then(() => {
       push.success({
-        title: 'Password changed',
-        message: 'Your password has been changed successfully',
+        title: "Password changed",
+        message: "Your password has been changed successfully",
         duration: 5000,
-      })
+      });
     })
-    .catch(displayProblem)
+    .catch(displayProblem);
 }
 </script>
 
@@ -64,9 +64,7 @@ async function submit() {
         <Dialog v-model:open="isPasswordDialogOpen">
           <form>
             <DialogTrigger as-child>
-              <Button variant="outline" class="mt-8">
-                Change password
-              </Button>
+              <Button variant="outline" class="mt-8"> Change password </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>
@@ -105,9 +103,7 @@ async function submit() {
                 <Button variant="secondary" @click="closePasswordDialog">
                   Cancel
                 </Button>
-                <Button @click="submit">
-                  Change password
-                </Button>
+                <Button @click="submit"> Change password </Button>
               </DialogFooter>
             </DialogContent>
           </form>

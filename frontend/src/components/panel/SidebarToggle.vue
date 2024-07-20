@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { ChevronLeft } from 'lucide-vue-next'
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+import { ChevronLeft } from "lucide-vue-next";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 defineProps<{
-  isOpen: boolean
-  setIsOpen?: () => void
-}>()
+  isOpen: boolean;
+  setIsOpen?: () => void;
+}>();
 </script>
 
 <template>
@@ -17,7 +17,14 @@ defineProps<{
       size="icon"
       @click="setIsOpen"
     >
-      <ChevronLeft :class="cn('h-4 w-4 transition-transform ease-in-out duration-700', !isOpen ? 'rotate-180' : 'rotate-0')" />
+      <ChevronLeft
+        :class="
+          cn(
+            'h-4 w-4 transition-transform ease-in-out duration-700',
+            !isOpen ? 'rotate-180' : 'rotate-0',
+          )
+        "
+      />
     </Button>
   </div>
 </template>

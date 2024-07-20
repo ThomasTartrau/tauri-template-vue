@@ -1,34 +1,42 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-import { Ellipsis, LogOut } from 'lucide-vue-next'
-import CustomRouterLink from '../CustomRouterLink.vue'
-import CollapseMenu from './CollapseMenu.vue'
-import { cn } from '@/lib/utils'
-import { useMenu } from '@/utils/useMenu'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import TooltipProvider from '@/components/ui/tooltip/TooltipProvider.vue'
-import Tooltip from '@/components/ui/tooltip/Tooltip.vue'
-import TooltipTrigger from '@/components/ui/tooltip/TooltipTrigger.vue'
+import { useI18n } from "vue-i18n";
+import { Ellipsis, LogOut } from "lucide-vue-next";
+import CustomRouterLink from "../CustomRouterLink.vue";
+import CollapseMenu from "./CollapseMenu.vue";
+import { cn } from "@/lib/utils";
+import { useMenu } from "@/utils/useMenu";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import TooltipProvider from "@/components/ui/tooltip/TooltipProvider.vue";
+import Tooltip from "@/components/ui/tooltip/Tooltip.vue";
+import TooltipTrigger from "@/components/ui/tooltip/TooltipTrigger.vue";
 
-import Button from '@/components/ui/button/Button.vue'
-import TooltipContent from '@/components/ui/tooltip/TooltipContent.vue'
-import { logout } from '@/iam'
+import Button from "@/components/ui/button/Button.vue";
+import TooltipContent from "@/components/ui/tooltip/TooltipContent.vue";
+import { logout } from "@/iam";
 
 defineProps<{
-  isOpen: boolean
-}>()
+  isOpen: boolean;
+}>();
 
-const { menuList } = useMenu()
-const { t } = useI18n({ useScope: 'global' })
+const { menuList } = useMenu();
+const { t } = useI18n({ useScope: "global" });
 </script>
 
 <template>
   <ScrollArea class="[&>div>div[style]]:!block">
     <nav class="mt-8 h-full w-full">
-      <ul class="flex w-full flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">
-        <li v-for="({ groupLabel, menus }, index) in menuList" :key="index" :class="cn('w-full', groupLabel ? 'pt-5' : '')">
+      <ul
+        class="flex w-full flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2"
+      >
+        <li
+          v-for="({ groupLabel, menus }, index) in menuList"
+          :key="index"
+          :class="cn('w-full', groupLabel ? 'pt-5' : '')"
+        >
           <template v-if="(isOpen && groupLabel) || isOpen === undefined">
-            <p class="text-sm font-medium text-muted-foreground px-4 pb-2 max-w-[248px] truncate">
+            <p
+              class="text-sm font-medium text-muted-foreground px-4 pb-2 max-w-[248px] truncate"
+            >
               {{ groupLabel }}
             </p>
           </template>
@@ -49,7 +57,9 @@ const { t } = useI18n({ useScope: 'global' })
           <template v-else>
             <p class="pb-2" />
           </template>
-          <template v-for="({ route, label, icon, active, submenus }, m_index) in menus">
+          <template
+            v-for="({ route, label, icon, active, submenus }, m_index) in menus"
+          >
             <template v-if="submenus.length === 0">
               <div :key="m_index" class="w-full">
                 <TooltipProvider disable-hoverable-content>
@@ -62,15 +72,24 @@ const { t } = useI18n({ useScope: 'global' })
                       >
                         <CustomRouterLink :route="route">
                           <div
-                            :class="cn('flex justify-center items-center', !isOpen ? '' : 'mr-4')"
+                            :class="
+                              cn(
+                                'flex justify-center items-center',
+                                !isOpen ? '' : 'mr-4',
+                              )
+                            "
                           >
                             <component :is="icon" :size="18" />
                           </div>
                           <p
-                            :class="cn(
-                              'max-w-[200px] flex justify-center items-center truncate',
-                              !isOpen ? '-translate-x-96 opacity-0' : 'translate-x-0 opacity-100',
-                            )"
+                            :class="
+                              cn(
+                                'max-w-[200px] flex justify-center items-center truncate',
+                                !isOpen
+                                  ? '-translate-x-96 opacity-0'
+                                  : 'translate-x-0 opacity-100',
+                              )
+                            "
                           >
                             {{ label }}
                           </p>
@@ -105,21 +124,30 @@ const { t } = useI18n({ useScope: 'global' })
                   class="w-full justify-center h-10 mt-5"
                   @click="logout"
                 >
-                  <span :class="cn('flex justify-center items-center', isOpen === false ? '' : 'mr-4')">
+                  <span
+                    :class="
+                      cn(
+                        'flex justify-center items-center',
+                        isOpen === false ? '' : 'mr-4',
+                      )
+                    "
+                  >
                     <LogOut :size="18" />
                   </span>
                   <p
-                    :class="cn(
-                      'whitespace-nowrap',
-                      !isOpen ? 'opacity-0 hidden' : 'opacity-100',
-                    )"
+                    :class="
+                      cn(
+                        'whitespace-nowrap',
+                        !isOpen ? 'opacity-0 hidden' : 'opacity-100',
+                      )
+                    "
                   >
-                    {{ t('sidebar.sign_out_label') }}
+                    {{ t("sidebar.sign_out_label") }}
                   </p>
                 </Button>
               </TooltipTrigger>
               <TooltipContent v-if="!isOpen" side="right">
-                {{ t('sidebar.sign_out_label') }}
+                {{ t("sidebar.sign_out_label") }}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

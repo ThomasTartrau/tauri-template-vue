@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "clean": "rm -rf node_modules dist bun.lockb",
+    "format": "prettier --write src/ ./*.{js,ts,json}",
     "lint": "eslint --fix ./src",
     "check": "tsc --noEmit && vue-tsc --noEmit",
     "lint:fix": "eslint . --fix",

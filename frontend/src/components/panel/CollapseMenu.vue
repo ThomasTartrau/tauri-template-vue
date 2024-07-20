@@ -1,37 +1,33 @@
 <script setup lang="ts">
-import { DropdownMenuArrow } from 'radix-vue'
-import { ref } from 'vue'
-import { ChevronDown, Dot } from 'lucide-vue-next'
-import CustomRouterLink from '../CustomRouterLink.vue'
-import { cn } from '@/lib/utils'
-import type { CollapseMenuButtonProps } from '@/lib/menu'
-import { useAdminPanel } from '@/utils/useAdminPanel'
-import Collapsible from '@/components/ui/collapsible/Collapsible.vue'
-import CollapsibleTrigger from '@/components/ui/collapsible/CollapsibleTrigger.vue'
-import Button from '@/components/ui/button/Button.vue'
-import CollapsibleContent from '@/components/ui/collapsible/CollapsibleContent.vue'
-import { DropdownMenu } from '@/components/ui/dropdown-menu'
-import DropdownMenuTrigger from '@/components/ui/dropdown-menu/DropdownMenuTrigger.vue'
-import DropdownMenuContent from '@/components/ui/dropdown-menu/DropdownMenuContent.vue'
-import DropdownMenuLabel from '@/components/ui/dropdown-menu/DropdownMenuLabel.vue'
-import DropdownMenuSeparator from '@/components/ui/dropdown-menu/DropdownMenuSeparator.vue'
-import DropdownMenuItem from '@/components/ui/dropdown-menu/DropdownMenuItem.vue'
+import { DropdownMenuArrow } from "radix-vue";
+import { ref } from "vue";
+import { ChevronDown, Dot } from "lucide-vue-next";
+import CustomRouterLink from "../CustomRouterLink.vue";
+import { cn } from "@/lib/utils";
+import type { CollapseMenuButtonProps } from "@/lib/menu";
+import { useAdminPanel } from "@/utils/useAdminPanel";
+import Collapsible from "@/components/ui/collapsible/Collapsible.vue";
+import CollapsibleTrigger from "@/components/ui/collapsible/CollapsibleTrigger.vue";
+import Button from "@/components/ui/button/Button.vue";
+import CollapsibleContent from "@/components/ui/collapsible/CollapsibleContent.vue";
+import { DropdownMenu } from "@/components/ui/dropdown-menu";
+import DropdownMenuTrigger from "@/components/ui/dropdown-menu/DropdownMenuTrigger.vue";
+import DropdownMenuContent from "@/components/ui/dropdown-menu/DropdownMenuContent.vue";
+import DropdownMenuLabel from "@/components/ui/dropdown-menu/DropdownMenuLabel.vue";
+import DropdownMenuSeparator from "@/components/ui/dropdown-menu/DropdownMenuSeparator.vue";
+import DropdownMenuItem from "@/components/ui/dropdown-menu/DropdownMenuItem.vue";
 
-const props = defineProps<CollapseMenuButtonProps>()
+const props = defineProps<CollapseMenuButtonProps>();
 
-const isSubmenuActive = props.submenus.some(submenu => submenu.active)
-const isCollapsed = ref(isSubmenuActive)
+const isSubmenuActive = props.submenus.some((submenu) => submenu.active);
+const isCollapsed = ref(isSubmenuActive);
 
-const { isOpen } = useAdminPanel()
+const { isOpen } = useAdminPanel();
 </script>
 
 <template>
   <div>
-    <Collapsible
-      v-if="isOpen"
-      v-model:open="isCollapsed"
-      class="w-full"
-    >
+    <Collapsible v-if="isOpen" v-model:open="isCollapsed" class="w-full">
       <CollapsibleTrigger
         class="[&[data-state=open]>div>div>svg]:rotate-180 mb-1"
         as-child
@@ -46,28 +42,42 @@ const { isOpen } = useAdminPanel()
                 <component :is="icon" :size="18" />
               </span>
               <p
-                :class="cn(
-                  'max-w-[150px] flex justify-center items-center truncate',
-                  isOpen ? 'translate-x-0 opacity-100' : '-translate-x-96 opacity-0',
-                )"
+                :class="
+                  cn(
+                    'max-w-[150px] flex justify-center items-center truncate',
+                    isOpen
+                      ? 'translate-x-0 opacity-100'
+                      : '-translate-x-96 opacity-0',
+                  )
+                "
               >
                 {{ label }}
               </p>
             </div>
             <div
-              :class="cn(
-                'whitespace-nowrap flex justify-center items-center',
-                isOpen ? 'translate-x-0 opacity-100' : '-translate-x-96 opacity-0',
-              )"
+              :class="
+                cn(
+                  'whitespace-nowrap flex justify-center items-center',
+                  isOpen
+                    ? 'translate-x-0 opacity-100'
+                    : '-translate-x-96 opacity-0',
+                )
+              "
             >
-              <ChevronDown class="transition-transform duration-200" :size="18" />
+              <ChevronDown
+                class="transition-transform duration-200"
+                :size="18"
+              />
             </div>
           </div>
         </Button>
       </CollapsibleTrigger>
-      <CollapsibleContent class="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
+      <CollapsibleContent
+        class="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down"
+      >
         <Button
-          v-for="({ route, label, active }, index) in submenus" :key="index"
+          v-for="({ route, label, active }, index) in submenus"
+          :key="index"
           :variant="active ? 'secondary' : 'ghost'"
           class="w-full justify-start h-10 mb-1"
           as-child
@@ -77,12 +87,14 @@ const { isOpen } = useAdminPanel()
               <Dot :size="18" />
             </span>
             <p
-              :class="cn(
-                'max-w-[170px] truncate',
-                isOpen
-                  ? 'translate-x-0 opacity-100'
-                  : '-translate-x-96 opacity-0',
-              )"
+              :class="
+                cn(
+                  'max-w-[170px] truncate',
+                  isOpen
+                    ? 'translate-x-0 opacity-100'
+                    : '-translate-x-96 opacity-0',
+                )
+              "
             >
               {{ label }}
             </p>
@@ -98,14 +110,20 @@ const { isOpen } = useAdminPanel()
         >
           <div class="w-full items-center flex justify-between">
             <div class="flex justify-center items-center">
-              <span :class="cn('flex justify-center items-center', !isOpen ? '' : 'mr-4')">
+              <span
+                :class="
+                  cn('flex justify-center items-center', !isOpen ? '' : 'mr-4')
+                "
+              >
                 <component :is="icon" :size="18" />
               </span>
               <p
-                :class="cn(
-                  'max-w-[200px] truncate flex justify-center items-center',
-                  !isOpen ? 'opacity-0' : 'opacity-100',
-                )"
+                :class="
+                  cn(
+                    'max-w-[200px] truncate flex justify-center items-center',
+                    !isOpen ? 'opacity-0' : 'opacity-100',
+                  )
+                "
               >
                 {{ label }}
               </p>
@@ -128,7 +146,11 @@ const { isOpen } = useAdminPanel()
           {{ label }}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem v-for="({ route, label }, index) in submenus" :key="index" as-child>
+        <DropdownMenuItem
+          v-for="({ route, label }, index) in submenus"
+          :key="index"
+          as-child
+        >
           <CustomRouterLink class="cursor-pointer" :route="route">
             <p class="max-w-[180px] truncate">
               {{ label }}

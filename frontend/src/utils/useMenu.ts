@@ -1,23 +1,23 @@
-import { createSharedComposable } from '@vueuse/core'
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { LayoutGrid, Settings, Users } from 'lucide-vue-next'
-import { useI18n } from 'vue-i18n'
-import type { Group } from '@/lib/menu'
-import { useRoute } from '@/router/routes'
+import { createSharedComposable } from "@vueuse/core";
+import { computed } from "vue";
+import { useRouter } from "vue-router";
+import { LayoutGrid, Settings, Users } from "lucide-vue-next";
+import { useI18n } from "vue-i18n";
+import type { Group } from "@/lib/menu";
+import { useRoute } from "@/router/routes";
 
 function _useMenu() {
-  const { currentRoute } = useRouter()
-  const { t } = useI18n({ useScope: 'global' })
+  const { currentRoute } = useRouter();
+  const { t } = useI18n({ useScope: "global" });
   const menuList = computed<Group[]>(() => {
     return [
       {
-        groupLabel: '',
+        groupLabel: "",
         menus: [
           {
-            route: 'Home',
-            label: t('sidebar.dashboard_label'),
-            active: currentRoute.value.fullPath.includes('/dashboard'),
+            route: "Home",
+            label: t("sidebar.dashboard_label"),
+            active: currentRoute.value.fullPath.includes("/dashboard"),
             icon: LayoutGrid,
             submenus: [],
           },
@@ -61,30 +61,32 @@ function _useMenu() {
         ],
       }, */
       {
-        groupLabel: t('sidebar.settings_group_label.label'),
+        groupLabel: t("sidebar.settings_group_label.label"),
         menus: [
           {
-            route: 'Settings',
-            label: t('sidebar.settings_group_label.menus.personnal_label'),
-            active: currentRoute.value.fullPath.includes(useRoute('Settings')),
+            route: "Settings",
+            label: t("sidebar.settings_group_label.menus.personnal_label"),
+            active: currentRoute.value.fullPath.includes(useRoute("Settings")),
             icon: Users,
             submenus: [],
           },
           {
-            route: 'SecuritySettings',
-            label: t('sidebar.settings_group_label.menus.security_label'),
-            active: currentRoute.value.fullPath.includes(useRoute('Settings')) && true,
+            route: "SecuritySettings",
+            label: t("sidebar.settings_group_label.menus.security_label"),
+            active:
+              currentRoute.value.fullPath.includes(useRoute("Settings")) &&
+              true,
             icon: Settings,
             submenus: [],
           },
         ],
       },
-    ]
-  })
+    ];
+  });
 
   return {
     menuList,
-  }
+  };
 }
 
-export const useMenu = createSharedComposable(_useMenu)
+export const useMenu = createSharedComposable(_useMenu);

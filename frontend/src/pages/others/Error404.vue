@@ -5,14 +5,14 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import { Button } from '@/components/ui/button'
-import { routes } from '@/router/routes'
-import router from '@/router/router'
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { routes } from "@/router/routes";
+import router from "@/router/router";
 
 function back_to_home() {
-  router.push({ name: routes.Home })
+  router.push({ name: routes.Home });
 }
 </script>
 
@@ -28,9 +28,7 @@ function back_to_home() {
       <CardContent>
         <Separator class="my-4" />
         <p>Oops! I think you are lost.</p>
-        <Button class="mt-4" @click="back_to_home">
-          Go to Home
-        </Button>
+        <Button class="mt-4" @click="back_to_home"> Go to Home </Button>
       </CardContent>
     </Card>
   </div>

@@ -1,39 +1,39 @@
-import HomePage from '@/pages/HomePage.vue'
-import LoginPage from '@/pages/users/LoginPage.vue'
-import RegisterPage from '@/pages/users/RegisterPage.vue'
-import VerifyEmail from '@/pages/users/VerifyEmail.vue'
-import UserSettings from '@/pages/users/UserSettings.vue'
-import Error404 from '@/pages/others/Error404.vue'
-import BeginResetpassword from '@/pages/users/BeginResetpassword.vue'
-import ResetPassword from '@/pages/users/ResetPassword.vue'
+import HomePage from "@/pages/HomePage.vue";
+import LoginPage from "@/pages/users/LoginPage.vue";
+import RegisterPage from "@/pages/users/RegisterPage.vue";
+import VerifyEmail from "@/pages/users/VerifyEmail.vue";
+import UserSettings from "@/pages/users/UserSettings.vue";
+import Error404 from "@/pages/others/Error404.vue";
+import BeginResetpassword from "@/pages/users/BeginResetpassword.vue";
+import ResetPassword from "@/pages/users/ResetPassword.vue";
 
-export type TemplateRoutes = string
+export type TemplateRoutes = string;
 
 export const routes: Record<TemplateRoutes, string> = {
-  Home: 'Home',
+  Home: "Home",
 
-  Login: 'Login',
-  Register: 'Register',
-  VerifyEmail: 'VerifyEmail',
-  BeginResetpassword: 'BeginResetpassword',
-  ResetPassword: 'ResetPassword',
+  Login: "Login",
+  Register: "Register",
+  VerifyEmail: "VerifyEmail",
+  BeginResetpassword: "BeginResetpassword",
+  ResetPassword: "ResetPassword",
 
-  Settings: 'Settings',
-  SecuritySettings: 'SecuritySettings',
-  DeleteAccountSettings: 'DeleteAccountSettings',
+  Settings: "Settings",
+  SecuritySettings: "SecuritySettings",
+  DeleteAccountSettings: "DeleteAccountSettings",
 
-  Error404: 'Error404',
-}
+  Error404: "Error404",
+};
 
 export default [
   {
     name: routes.Home,
-    path: '/',
+    path: "/",
     component: HomePage,
   },
   {
     name: routes.Login,
-    path: '/login',
+    path: "/login",
     component: LoginPage,
     meta: {
       requiresAuth: false,
@@ -41,19 +41,19 @@ export default [
   },
   {
     name: routes.Register,
-    path: '/register',
+    path: "/register",
     component: RegisterPage,
     meta: { requiresAuth: false },
   },
   {
     name: routes.VerifyEmail,
-    path: '/verify-email',
+    path: "/verify-email",
     component: VerifyEmail,
     meta: { requiresAuth: false },
   },
   {
     name: routes.BeginResetpassword,
-    path: '/begin-reset-password',
+    path: "/begin-reset-password",
     component: BeginResetpassword,
     meta: {
       requiresAuth: false,
@@ -62,7 +62,7 @@ export default [
   },
   {
     name: routes.ResetPassword,
-    path: '/reset-password',
+    path: "/reset-password",
     component: ResetPassword,
     meta: {
       requiresAuth: false,
@@ -71,26 +71,26 @@ export default [
   },
   {
     name: routes.Settings,
-    path: '/settings',
+    path: "/settings",
     component: UserSettings,
   },
   {
     name: routes.SecuritySettings,
-    path: '/settings/security',
+    path: "/settings/security",
     component: UserSettings,
   },
   {
     name: routes.DeleteAccountSettings,
-    path: '/settings/delete-account',
+    path: "/settings/delete-account",
     component: UserSettings,
   },
   {
     name: routes.Error404,
-    path: '/:pathMatch(.*)*',
+    path: "/:pathMatch(.*)*",
     component: Error404,
   },
-]
+];
 
 export function useRoute(routeName: TemplateRoutes): string {
-  return routes[routeName]
+  return routes[routeName];
 }
