@@ -465,6 +465,7 @@ dependencies = [
  "mime",
  "mrml",
  "paperclip",
+ "rand",
  "reqwest",
  "serde",
  "serde_json",

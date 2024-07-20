@@ -1,0 +1,37 @@
+<mjml>
+    <mj-head>
+        <mj-title>A2f verification</mj-title>
+        <mj-style inline="inline">
+            body {
+                margin: 0;
+                padding: 0;
+                width: 100% !important;
+                background-color: #f0f0f0;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            h2 {
+                font-size: 18px;
+            }
+            p {
+                font-size: 16px;
+            }
+        </mj-style>
+    </mj-head>
+    <mj-body>
+        <mj-section>
+            <mj-column>
+                <mj-image src="{ $logo_url }" alt="Logo" width="150px" />
+                <mj-text align="center">
+                    <h1>
+                    <p>Here is your two factor secret: { $secret }</p>
+                </mj-text>
+                <mj-text align="center">
+                    <p>If you didn't try to login, you can ignore this email.</p>
+                    <p class="small">This code will expire in <strong>5 minutes</strong>.</p>
+                </mj-text>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>
