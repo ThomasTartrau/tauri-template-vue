@@ -23,6 +23,9 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { displayProblem } from '@/http'
 
+const isPasswordDialogOpen = ref<boolean>(false)
+const closePasswordDialog = () => isPasswordDialogOpen.value = false
+
 const new_password = ref<string>('')
 const confirm_password = ref<string>('')
 
@@ -58,14 +61,14 @@ async function submit() {
         it. You need to use an secure password with minimum 12 characters.
       </CardDescription>
       <div class="flex justify-end">
-        <Dialog>
+        <Dialog v-model:open="isPasswordDialogOpen">
           <form>
             <DialogTrigger as-child>
-              <Button variant="outline">
+              <Button variant="outline" class="mt-8">
                 Change password
               </Button>
             </DialogTrigger>
-            <DialogContent class="sm:max-w-[425px]">
+            <DialogContent>
               <DialogHeader>
                 <DialogTitle>Change password</DialogTitle>
                 <DialogDescription>
@@ -99,6 +102,9 @@ async function submit() {
                 </div>
               </div>
               <DialogFooter>
+                <Button variant="secondary" @click="closePasswordDialog">
+                  Cancel
+                </Button>
                 <Button @click="submit">
                   Change password
                 </Button>
