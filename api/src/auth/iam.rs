@@ -564,7 +564,7 @@ pub fn authorize_reset_password(
 const A2F_TOKEN_VERSION: i64 = 1;
 const A2F_TOKEN_EXPIRATION: Duration = Duration::from_secs(60 * 5);
 
-pub async fn create_a2f_token(
+pub fn create_a2f_token(
     private_key: &PrivateKey,
     user_id: Uuid,
 ) -> Result<RootToken, biscuit_auth::error::Token> {

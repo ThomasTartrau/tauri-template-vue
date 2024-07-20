@@ -8,9 +8,11 @@ use lettre::Address;
 use log::{debug, error, info, warn};
 use paperclip::actix::web::{Data, Json};
 use paperclip::actix::{api_v2_operation, Apiv2Schema, CreatedJson, NoContent};
+use rand::{thread_rng, Rng};
 use serde::{Deserialize, Serialize};
 use sqlx::{query, query_as, query_scalar, Acquire, Postgres};
 use std::str::FromStr;
+use std::time::{SystemTime, UNIX_EPOCH};
 use uuid::Uuid;
 use validator::Validate;
 
@@ -21,7 +23,7 @@ use crate::auth::iam::{
 };
 use crate::utils::openapi::{OaBiscuitRefresh, OaBiscuitUserAccess};
 
-use super::iam::{create_email_verification_token, get_user_id_from_expired_email_verification};
+use super::iam::{create_a2f_token, create_email_verification_token, get_user_id_from_expired_email_verification};
 
 #[derive(Debug, Serialize, Deserialize, Apiv2Schema, Validate)]
 pub struct LoginPost {
@@ -51,6 +53,11 @@ pub struct LoginResponse {
     email: String,
     first_name: String,
     last_name: String,
+}
+
+#[derive(Debug, Serialize, Deserialize, Apiv2Schema)]
+pub struct A2fResponse {
+    a2f_token: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Apiv2Schema, Validate)]
@@ -85,6 +92,12 @@ pub struct ChangePasswordPost {
     new_password: String,
 }
 
+#[derive(Debug, Serialize, Deserialize, Apiv2Schema)]
+pub struct A2fVerificationPost {
+    token: String,
+    secret: String,
+}
+
 #[api_v2_operation(
     summary = "Login",
     description = "Get an access token using a user's credentials.",
@@ -96,7 +109,7 @@ pub struct ChangePasswordPost {
 pub async fn login(
     state: Data<crate::State>,
     body: Json<LoginPost>,
-) -> Result<CreatedJson<LoginResponse>, MyProblem> {
+) -> Result<CreatedJson<()>, MyProblem> {
     if let Err(e) = body.validate() {
         return Err(MyProblem::Validation(e));
     }
@@ -128,7 +141,24 @@ pub async fn login(
                 .verify_password(body.password.as_bytes(), &password_hash)
                 .is_ok()
             {
-                do_login(&state.db, &state.biscuit_private_key, user, None).await
+                let is_2af_enabled = query!(
+                    "
+                        SELECT a2f_enable_at
+                        FROM iam.user
+                        WHERE user__id = $1
+                    ",
+                    &user.user_id,
+                )
+                .fetch_optional(&state.db)
+                .await
+                .map_err(MyProblem::from)?
+                .is_some();
+
+                if is_2af_enabled {
+                    do_a2f_login(state, &mut state.db, &state.biscuit_private_key, user).await
+                } else {
+                    do_login(&state.db, &state.biscuit_private_key, user, None).await
+                }
             } else {
                 Err(MyProblem::AuthFailedLogin)
             }
@@ -687,4 +717,70 @@ fn generate_hashed_password(password: &str) -> Result<PasswordHashString, MyProb
         .serialize();
 
     Ok(password_hash)
+}
+
+fn generate_otp() -> Result<u32, MyProblem> {
+    let now = SystemTime::now().duration_since(UNIX_EPOCH).map_err(|e| {
+        error!("Error getting system time: {e}");
+        MyProblem::InternalServerError
+    })?.as_secs() / 30;
+    let mut rng = thread_rng();
+    let random_number: u32 = rng.gen_range(0..1000000);
+    let otp = (now as u32 ^ random_number) % 1000000;
+    Ok(otp)
+}
+
+async fn do_a2f_login(
+    state: Data<crate::State>,
+    db: &mut sqlx::PgConnection,
+    biscuit_private_key: &PrivateKey,
+    user: UserLookup,
+) -> Result<CreatedJson<A2fResponse>, MyProblem> {
+    let mut tx = db.begin().await?;
+
+    let a2f_token = create_a2f_token(biscuit_private_key, user.user_id).map_err(|e| {
+        error!("Error trying to create a2f token: {e}");
+        MyProblem::InternalServerError
+    })?;
+
+    let otp = generate_otp()?;
+
+    query!(
+        "
+            INSERT INTO iam.a2f (user__id, secret)
+            VALUES ($1, $2)
+        ",
+        &user.user_id,
+        otp as i32,
+    )
+    .execute(&mut *tx)
+    .await?;
+
+    let address = Address::from_str(&user.email).map_err(|e| {
+        error!("Error trying to parse email address: {e}");
+        MyProblem::InternalServerError
+    })?;
+    let recipient = Mailbox::new(
+        Some(format!("{} {}", user.first_name, user.last_name)),
+        address,
+    );
+
+    match state
+        .mailer
+        .send_mail(
+            Mail::A2f {
+                secret: otp.to_string(),
+            },
+            recipient,
+        )
+        .await
+    {
+        Ok(_) => Ok(CreatedJson(A2fResponse {
+            a2f_token: a2f_token.serialized_biscuit,
+        })),
+        Err(e) => {
+            error!("Error trying to send email: {e}");
+            Err(MyProblem::InternalServerError)
+        }
+    }
 }

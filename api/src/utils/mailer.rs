@@ -18,6 +18,7 @@ pub struct Mailer {
 pub enum Mail {
     VerifyUserEmail { url: String },
     ResetPassword { url: String },
+    A2f { secret: String },
 }
 
 impl Mail {
@@ -25,6 +26,7 @@ impl Mail {
         match self {
             Mail::VerifyUserEmail { .. } => include_str!("../mail_templates/verify_user_email.mjml"),
             Mail::ResetPassword { .. } => include_str!("../mail_templates/reset_password.mjml"),
+            Mail::A2f { .. } => include_str!("../mail_templates/a2f.mjml"),
         }
     }
 
@@ -32,6 +34,7 @@ impl Mail {
         match self {
             Mail::VerifyUserEmail { .. } => "Please verify your email address".to_owned(),
             Mail::ResetPassword { .. } => "Reset your password".to_owned(),
+            Mail::A2f { .. } => "Two-factor authentication code".to_owned(),
         }
     }
 
@@ -39,6 +42,7 @@ impl Mail {
         match self {
             Mail::VerifyUserEmail { url } => vec![("url".to_owned(), url.to_owned())],
             Mail::ResetPassword { url } => vec![("url".to_owned(), url.to_owned())],
+            Mail::A2f { secret } => vec![("secret".to_owned(), secret.to_owned())],
         }
     }
 }
