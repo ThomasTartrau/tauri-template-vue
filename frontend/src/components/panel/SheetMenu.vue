@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Menu as MenuIcon, PanelsTopLeft } from "lucide-vue-next";
+import { Menu as MenuIcon, Code } from "lucide-vue-next";
 import { routes } from "@/router/routes";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,7 +27,7 @@ import { config } from "@/lib/config";
           as-child
         >
           <router-link :to="{ name: routes.Home }">
-            <PanelsTopLeft class="w-6 h-6 mr-1" />
+            <Code class="w-6 h-6 mr-1" />
             <h1 class="font-bold text-lg">
               {{ config.SITE_NAME }}
             </h1>
