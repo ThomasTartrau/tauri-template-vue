@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FlagComponent from "./FlagComponent.vue";
+import FlagComponent from "@/components/panel/FlagComponent.vue";
 import ColorModeToggle from "@/components/ColorModeToggle.vue";
 import UserDropdown from "@/components/panel/UserDropdown.vue";
 import SheetMenu from "@/components/panel/SheetMenu.vue";

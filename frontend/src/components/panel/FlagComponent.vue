@@ -9,7 +9,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 import { getLanguageLabel, supportedLanguages } from "@/lib/config";
 import type { Language } from "@/lib/config";
 
@@ -21,7 +21,7 @@ watch(
   (newLocale, oldLocale) => {
     if (newLocale && newLocale !== oldLocale) handleLanguageSelect(newLocale);
   },
-  { immediate: true },
+  { immediate: true }
 );
 
 function handleLanguageSelect(newLocale: string) {
